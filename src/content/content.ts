@@ -8,16 +8,19 @@ import { isThumbnailMode } from "../domain/thumbnail-mode"
 import { classifyPage } from "./page-classifier"
 import { StyleState } from "./style-state"
 import { getChannelVideosKey } from "../domain/channel-whitelist"
+import { ShortsState } from "./shorts-state"
 
 export default function mountContentScript(): () => void {
   const root = document.documentElement
   const styleState = new StyleState(root)
+  const shortsState = new ShortsState(document)
   const settingsRepository = new SettingsRepository()
   const diagnostics = new Diagnostics(document)
   let lastNavigation = "initial"
   const controller = new RuntimeController({
     settingsRepository,
     styleState,
+    shortsState,
     getLocation: () => window.location,
     classify: classifyPage,
     subscribeToStorageChanges,
@@ -43,6 +46,8 @@ export default function mountContentScript(): () => void {
 
     if (message.type === "set-enabled") {
       await settingsRepository.save({ ...settings, enabled: message.enabled })
+    } else if (message.type === "set-hide-shorts-on-home") {
+      await settingsRepository.save({ ...settings, hideShortsOnHome: message.enabled })
     } else if (message.type === "set-thumbnail-mode") {
       if (!isThumbnailMode(message.mode)) {
         return { ok: false, error: "Unsupported thumbnail mode" }

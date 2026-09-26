@@ -54,3 +54,7 @@ html[data-hyt-mode="solid-color"] .yt-lockup-view-model-wiz__content-image img,
 html[data-hyt-mode="solid-color"] .shortsLockupViewModelHostThumbnailContainer img {
   opacity: 0 !important;
 }
+
+[data-hyt-shorts-hidden="true"] {
+  display: none !important;
+}
