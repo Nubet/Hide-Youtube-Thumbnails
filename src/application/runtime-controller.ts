@@ -31,6 +31,7 @@ export class RuntimeController {
   private refreshVersion = 0
   private unsubscribeFromStorage: (() => void) | undefined
   private unsubscribeFromNavigation: (() => void) | undefined
+  private currentState: RuntimeState | undefined
 
   public constructor(
     private readonly dependencies: RuntimeControllerDependencies,
@@ -61,7 +62,12 @@ export class RuntimeController {
     const pageType = this.dependencies.classify(this.dependencies.getLocation())
     const state = createRuntimeState(settings, pageType)
 
+    this.currentState = state
     this.dependencies.styleState.apply(state)
+  }
+
+  public getState(): RuntimeState | undefined {
+    return this.currentState
   }
 
   public dispose(): void {
@@ -70,6 +76,7 @@ export class RuntimeController {
     this.unsubscribeFromStorage = undefined
     this.unsubscribeFromNavigation?.()
     this.unsubscribeFromNavigation = undefined
+    this.currentState = undefined
     this.dependencies.styleState.clear()
   }
 

@@ -4,10 +4,30 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Hide YouTube Thumbnails</title>
+    <link rel="stylesheet" href="./popup.css" />
   </head>
   <body>
-    <main>
-      <p>Settings will be available here.</p>
+    <main aria-labelledby="title">
+      <h1 id="title">hide-youtube-thumbnails</h1>
+      <p id="page-status">Loading page status...</p>
+
+      <label>
+        <input id="enabled" type="checkbox" />
+        Enable thumbnail hiding
+      </label>
+
+      <label for="mode">Thumbnail mode</label>
+      <select id="mode">
+        <option value="hidden">Hidden</option>
+        <option value="hidden-except-hover">Hidden except hover</option>
+        <option value="blurred">Blurred</option>
+        <option value="solid-color">Solid color</option>
+        <option value="normal">Normal</option>
+      </select>
+
+      <button id="disable-page" type="button">Disable on this page</button>
+      <p id="status" role="status" aria-live="polite"></p>
     </main>
+    <script type="module" src="./popup.ts"></script>
   </body>
 </html>
