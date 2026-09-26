@@ -7,6 +7,8 @@ export type BrowserStorage = {
   sync: StorageArea
 }
 
+import type { StorageChangeSubscription } from "../shared/contracts"
+
 export function getBrowserStorage(): BrowserStorage {
   const extensionApi = globalThis.browser ?? globalThis.chrome
 
@@ -15,4 +17,18 @@ export function getBrowserStorage(): BrowserStorage {
   }
 
   return extensionApi.storage as BrowserStorage
+}
+
+export function subscribeToStorageChanges(
+  listener: () => void,
+): ReturnType<StorageChangeSubscription> {
+  const extensionApi = globalThis.browser ?? globalThis.chrome
+  const changes = extensionApi?.storage?.onChanged
+
+  if (!changes) return () => undefined
+
+  const handler = () => listener()
+  changes.addListener(handler)
+
+  return () => changes.removeListener(handler)
 }

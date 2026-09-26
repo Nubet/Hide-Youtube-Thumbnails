@@ -1,4 +1,4 @@
-import type { Settings } from "../domain/settings"
+import type { RuntimeState } from "../domain/runtime-state"
 
 export type StyleRoot = {
   dataset: DOMStringMap
@@ -15,11 +15,11 @@ export class StyleState {
     delete this.root.dataset[READY_ATTRIBUTE]
   }
 
-  public apply(settings: Settings): void {
-    const shouldApplyMode = settings.enabled && settings.mode !== "normal"
+  public apply(state: RuntimeState): void {
+    const shouldApplyMode = state.enabled && state.mode !== "normal"
 
     if (shouldApplyMode) {
-      this.root.dataset[MODE_ATTRIBUTE] = settings.mode
+      this.root.dataset[MODE_ATTRIBUTE] = state.mode
     } else {
       delete this.root.dataset[MODE_ATTRIBUTE]
     }

@@ -1,6 +1,7 @@
 import type { PageType } from "../domain/page-type"
+import type { PathLocation } from "../shared/contracts"
 
-export type PathLocation = Pick<Location, "pathname">
+export type { PathLocation } from "../shared/contracts"
 
 export function classifyPage(location: PathLocation): PageType {
   const { pathname } = location
