@@ -97,24 +97,24 @@
           <div>
             <h2 id="whitelist-title">Show thumbnails on selected channels</h2>
             <p class="help-text">
-              Add a channel's <strong>/videos</strong> URL to show thumbnails only while browsing
-              that channel's videos. Thumbnails will stay hidden on the home page, search results,
-              and other channels.
+              Add a channel URL to show thumbnails on that channel's home page and
+              <strong>/videos</strong> tab. Thumbnails will stay hidden on the main home page,
+              search results, and other channels.
             </p>
           </div>
           <div class="whitelist-entry">
-            <label for="channel-url">Channel videos URL</label>
+            <label for="channel-url">Channel URL</label>
             <div class="input-row">
               <input
                 id="channel-url"
                 type="url"
                 inputmode="url"
-                placeholder="https://www.youtube.com/@example/videos"
+                placeholder="https://www.youtube.com/@example"
                 autocomplete="off"
               />
               <button id="add-channel" type="button">Add channel</button>
             </div>
-            <small>Use the channel's Videos tab URL, not the homepage URL.</small>
+            <small>Use the channel homepage URL or its Videos tab URL.</small>
           </div>
           <ul id="whitelist-list" class="whitelist-list" aria-live="polite"></ul>
         </section>

@@ -1,4 +1,4 @@
-const channelPathPattern = /^\/((?:@|channel\/|c\/|user\/)[^/]+)\/videos\/?$/
+const channelPathPattern = /^\/((?:@|channel\/|c\/|user\/)[^/]+)(?:\/videos)?\/?$/
 
 export function getChannelVideosKey(pathname: string): string | undefined {
   const match = pathname.match(channelPathPattern)
@@ -10,10 +10,13 @@ export function parseChannelWhitelistInput(value: string): string | undefined {
   if (!input) return undefined
 
   try {
+    const normalizedInput = /^(?:www\.|m\.)?youtube\.com\//i.test(input)
+      ? `https://${input}`
+      : input
     const url = new URL(
-      input.includes("://")
-        ? input
-        : `https://www.youtube.com/${input.replace(/^\/+/, "")}`,
+      normalizedInput.includes("://")
+        ? normalizedInput
+        : `https://www.youtube.com/${normalizedInput.replace(/^\/+/, "")}`,
     )
 
     if (url.hostname !== "youtube.com" && !url.hostname.endsWith(".youtube.com")) {

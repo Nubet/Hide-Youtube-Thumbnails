@@ -30,7 +30,7 @@ let whitelistSaving = false
 function showError(message: string): void {
   status.textContent = message
   channelAction.disabled = true
-  channelActionHelp.textContent = "Open a YouTube channel's Videos tab to add that channel."
+  channelActionHelp.textContent = "Open a YouTube channel page or its Videos tab to add that channel."
 }
 
 async function loadStoredSettings(): Promise<void> {
@@ -112,9 +112,9 @@ function renderCurrentChannelAction(): void {
 
   if (!currentChannelKey) {
     channelAction.disabled = true
-    channelAction.textContent = "Open a channel's Videos tab"
+    channelAction.textContent = "Open a channel page"
     channelActionHelp.textContent =
-      "This exception applies only to a specific channel's /videos page."
+      "Open the channel home page or its /videos tab to add an exception."
     return
   }
 
@@ -122,14 +122,14 @@ function renderCurrentChannelAction(): void {
     channelAction.disabled = true
     channelAction.textContent = "Channel already saved"
     channelActionHelp.textContent =
-      "Thumbnails are visible on this channel's Videos tab and hidden everywhere else."
+      "Thumbnails are visible on this channel home page and its Videos tab."
     return
   }
 
   channelAction.disabled = false
   channelAction.textContent = "Show thumbnails for this channel's videos"
   channelActionHelp.textContent =
-    "This affects only this channel's /videos page. Home, search, and other channels stay hidden."
+    "This affects only this channel home page and its /videos tab. Home, search, and other channels stay hidden."
 }
 
 function renderChannelAction(state: Extract<ExtensionResponse, { ok: true; state: unknown }>["state"]): void {
@@ -195,7 +195,7 @@ async function update(message: Parameters<typeof sendMessageToActiveTab>[0]): Pr
       channelAction.disabled = true
       channelAction.textContent = "Channel already saved"
       channelActionHelp.textContent =
-        "Thumbnails are visible on this channel's Videos tab and hidden everywhere else."
+        "Thumbnails are visible on this channel home page and its Videos tab."
     }
   } catch (error) {
     if (message.type === "set-enabled" || message.type === "set-thumbnail-mode" || message.type === "set-hide-shorts-on-home" || message.type === "set-hide-playables") {
@@ -240,7 +240,7 @@ addChannelButton.addEventListener("click", () => {
   const channelKey = parseChannelWhitelistInput(channelUrlInput.value)
 
   if (!channelKey) {
-    status.textContent = "Enter a valid YouTube /videos channel URL"
+    status.textContent = "Enter a valid YouTube channel URL"
     channelUrlInput.focus()
     return
   }
