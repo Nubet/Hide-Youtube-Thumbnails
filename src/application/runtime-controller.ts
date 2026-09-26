@@ -1,0 +1,83 @@
+import { defaultSettings, type Settings } from "../domain/settings"
+import { createRuntimeState } from "../domain/policy"
+import type { RuntimeState } from "../domain/runtime-state"
+import type { PageType } from "../domain/page-type"
+import type {
+  PathLocation,
+  EventSubscription,
+  StorageChangeSubscription,
+} from "../shared/contracts"
+
+type SettingsRepository = {
+  load(): Promise<Settings>
+}
+
+type StyleState = {
+  markLoading(): void
+  apply(state: RuntimeState): void
+  clear(): void
+}
+
+export type RuntimeControllerDependencies = {
+  settingsRepository: SettingsRepository
+  styleState: StyleState
+  getLocation: () => PathLocation
+  classify: (location: PathLocation) => PageType
+  subscribeToStorageChanges?: StorageChangeSubscription
+  subscribeToNavigationChanges?: EventSubscription
+}
+
+export class RuntimeController {
+  private refreshVersion = 0
+  private unsubscribeFromStorage: (() => void) | undefined
+  private unsubscribeFromNavigation: (() => void) | undefined
+
+  public constructor(
+    private readonly dependencies: RuntimeControllerDependencies,
+  ) {}
+
+  public start(): void {
+    this.dependencies.styleState.markLoading()
+    this.unsubscribeFromStorage = (
+      this.dependencies.subscribeToStorageChanges ?? (() => () => undefined)
+    )(() => {
+      void this.refresh()
+    })
+    this.unsubscribeFromNavigation = (
+      this.dependencies.subscribeToNavigationChanges ?? (() => () => undefined)
+    )(() => {
+      void this.refresh()
+    })
+
+    void this.refresh()
+  }
+
+  public async refresh(): Promise<void> {
+    const version = ++this.refreshVersion
+    const settings = await this.loadSettings()
+
+    if (version !== this.refreshVersion) return
+
+    const pageType = this.dependencies.classify(this.dependencies.getLocation())
+    const state = createRuntimeState(settings, pageType)
+
+    this.dependencies.styleState.apply(state)
+  }
+
+  public dispose(): void {
+    this.refreshVersion += 1
+    this.unsubscribeFromStorage?.()
+    this.unsubscribeFromStorage = undefined
+    this.unsubscribeFromNavigation?.()
+    this.unsubscribeFromNavigation = undefined
+    this.dependencies.styleState.clear()
+  }
+
+  private async loadSettings(): Promise<Settings> {
+    try {
+      return await this.dependencies.settingsRepository.load()
+    } catch {
+      return defaultSettings
+    }
+  }
+}
