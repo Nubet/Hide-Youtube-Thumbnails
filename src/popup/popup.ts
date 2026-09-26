@@ -16,7 +16,6 @@ const enabledControl = getRequiredElement<HTMLInputElement>("#enabled")
 const modeControl = getRequiredElement<HTMLSelectElement>("#mode")
 const hideShortsOnHomeControl = getRequiredElement<HTMLInputElement>("#hide-shorts-on-home")
 const hidePlayablesControl = getRequiredElement<HTMLInputElement>("#hide-playables")
-const pageStatus = getRequiredElement<HTMLParagraphElement>("#page-status")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
 const channelAction = getRequiredElement<HTMLButtonElement>("#channel-action")
 const channelActionHelp = getRequiredElement<HTMLParagraphElement>("#channel-action-help")
@@ -29,7 +28,6 @@ let currentChannelKey: string | undefined
 let whitelistSaving = false
 
 function showError(message: string): void {
-  pageStatus.textContent = "Page controls are unavailable."
   status.textContent = message
   channelAction.disabled = true
   channelActionHelp.textContent = "Open a YouTube channel's Videos tab to add that channel."
@@ -150,7 +148,6 @@ async function loadRuntimeState(): Promise<void> {
       return
     }
 
-    pageStatus.textContent = `Page: ${response.state.pageType}`
     enabledControl.checked = response.state.enabled
     modeControl.value = response.state.mode
     renderChannelAction(response.state)

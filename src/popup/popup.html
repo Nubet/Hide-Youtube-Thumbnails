@@ -7,54 +7,81 @@
     <link rel="stylesheet" href="./popup.css" />
   </head>
   <body>
+    <header class="app-header">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+          <path d="M21.58 5.75c-.24-.91-.97-1.64-1.88-1.88C18.04 3.5 12 3.5 12 3.5s-6.04 0-7.7.37c-.91.24-1.64.97-1.88 1.88C2 7.42 2 12 2 12s0 4.58.42 6.25c.24.91.97 1.64 1.88 1.88 1.66.37 7.7.37 7.7.37s6.04 0 7.7-.37c.91-.24 1.64-.97 1.88-1.88.42-1.67.42-6.25.42-6.25s0-4.58-.42-6.25zM10 15.5v-7l6 3.5-6 3.5z"></path>
+        </svg>
+        <h1 id="title">Hide Thumbnails</h1>
+      </div>
+    </header>
+
     <main aria-labelledby="title">
-      <h1 id="title">hide-youtube-thumbnails</h1>
-      <p id="page-status">Loading page status...</p>
+      <div class="settings-group">
+        <label class="setting-item" for="enabled">
+          <div class="setting-content">
+            <span class="setting-title">Enable extension</span>
+            <span class="setting-desc">Toggle all thumbnail hiding</span>
+          </div>
+          <div class="toggle">
+            <input id="enabled" type="checkbox" />
+            <span class="slider"></span>
+          </div>
+        </label>
 
-      <label>
-        <input id="enabled" type="checkbox" />
-        Enable thumbnail hiding
-      </label>
+        <div class="setting-item column">
+          <div class="setting-content">
+            <label class="setting-title" for="mode">Thumbnail mode</label>
+            <span class="setting-desc">How should thumbnails be hidden?</span>
+          </div>
+          <div class="select-wrapper">
+            <select id="mode">
+              <option value="hidden">Hidden completely</option>
+              <option value="hidden-except-hover">Hidden except hover</option>
+              <option value="blurred">Blurred</option>
+              <option value="solid-color">Solid color</option>
+              <option value="normal">Normal (Visible)</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-      <label for="mode">Thumbnail mode</label>
-      <select id="mode">
-        <option value="hidden">Hidden</option>
-        <option value="hidden-except-hover">Hidden except hover</option>
-        <option value="blurred">Blurred</option>
-        <option value="solid-color">Solid color</option>
-        <option value="normal">Normal</option>
-      </select>
+      <div class="settings-group">
+        <label class="setting-item" for="hide-shorts-on-home">
+          <div class="setting-content">
+            <span class="setting-title">Hide Shorts on Home</span>
+            <span class="setting-desc">Removes Shorts shelf from home page</span>
+          </div>
+          <div class="toggle">
+            <input id="hide-shorts-on-home" type="checkbox" />
+            <span class="slider"></span>
+          </div>
+        </label>
 
-      <label class="switch-row" for="hide-shorts-on-home">
-        <span>
-          <strong>Hide Shorts on Home</strong>
-          <small>Only the YouTube home page. Shorts are not blocked elsewhere.</small>
-        </span>
-        <input id="hide-shorts-on-home" type="checkbox" />
-      </label>
+        <label class="setting-item" for="hide-playables">
+          <div class="setting-content">
+            <span class="setting-title">Hide Playables</span>
+            <span class="setting-desc">Removes Game Room & Playables</span>
+          </div>
+          <div class="toggle">
+            <input id="hide-playables" type="checkbox" />
+            <span class="slider"></span>
+          </div>
+        </label>
+      </div>
 
-      <label class="switch-row" for="hide-playables">
-        <span>
-          <strong>Hide Playables</strong>
-          <small>Remove YouTube's Game Room section and similar Playables shelves.</small>
-        </span>
-        <input id="hide-playables" type="checkbox" />
-      </label>
+      <section class="settings-group exceptions" aria-labelledby="channel-list-title">
+        <div class="section-header">
+          <h2 id="channel-list-title">Channel Exceptions</h2>
+          <p class="section-desc">Show thumbnails on specific channel pages.</p>
+        </div>
 
-      <section class="channel-action" aria-labelledby="channel-action-title">
-        <h2 id="channel-action-title">Channel thumbnail exception</h2>
-        <p id="channel-action-help">
-          Show thumbnails only while browsing this channel's Videos tab. They stay hidden
-          everywhere else.
-        </p>
-        <button id="channel-action" type="button">Show thumbnails for this channel's videos</button>
-      </section>
+        <div class="channel-action-card">
+          <p id="channel-action-help">Open a YouTube channel's Videos tab to add it.</p>
+          <button id="channel-action" class="primary-button" type="button">Show thumbnails for this channel</button>
+        </div>
 
-      <section class="channel-list" aria-labelledby="channel-list-title">
-        <h2 id="channel-list-title">Saved channel exceptions</h2>
-        <p>Thumbnails are shown only on each channel's <strong>/videos</strong> page.</p>
         <div class="channel-entry">
-          <label for="channel-url">Add a channel's Videos URL</label>
           <div class="input-row">
             <input
               id="channel-url"
@@ -63,12 +90,15 @@
               placeholder="youtube.com/@example/videos"
               autocomplete="off"
             />
-            <button id="add-channel" type="button">Add</button>
+            <button id="add-channel" class="secondary-button" type="button">Add</button>
           </div>
         </div>
         <ul id="channel-list" aria-live="polite"></ul>
       </section>
-      <p id="status" role="status" aria-live="polite"></p>
+
+      <div class="status-container">
+        <p id="status" role="status" aria-live="polite"></p>
+      </div>
     </main>
     <script type="module" src="./popup.ts"></script>
   </body>
