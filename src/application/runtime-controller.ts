@@ -24,10 +24,16 @@ type ShortsState = {
   clear(): void
 }
 
+type PlayablesState = {
+  apply(state: RuntimeState): void
+  clear(): void
+}
+
 export type RuntimeControllerDependencies = {
   settingsRepository: SettingsRepository
   styleState: StyleState
   shortsState?: ShortsState
+  playablesState?: PlayablesState
   getLocation: () => PathLocation
   classify: (location: PathLocation) => PageType
   subscribeToStorageChanges?: StorageChangeSubscription
@@ -77,6 +83,7 @@ export class RuntimeController {
     this.currentState = state
     this.dependencies.styleState.apply(state)
     this.dependencies.shortsState?.apply(state)
+    this.dependencies.playablesState?.apply(state)
     this.dependencies.onStateApplied?.(state)
   }
 
@@ -93,6 +100,7 @@ export class RuntimeController {
     this.currentState = undefined
     this.dependencies.styleState.clear()
     this.dependencies.shortsState?.clear()
+    this.dependencies.playablesState?.clear()
   }
 
   private async loadSettings(): Promise<Settings> {

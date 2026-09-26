@@ -19,6 +19,7 @@ function getRequiredElement<T extends Element>(selector: string): T {
 const form = getRequiredElement<HTMLFormElement>("#settings-form")
 const enabledControl = getRequiredElement<HTMLInputElement>("#enabled")
 const hideShortsOnHomeControl = getRequiredElement<HTMLInputElement>("#hide-shorts-on-home")
+const hidePlayablesControl = getRequiredElement<HTMLInputElement>("#hide-playables")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
 const resetButton = getRequiredElement<HTMLButtonElement>("#reset")
 const channelUrlInput = getRequiredElement<HTMLInputElement>("#channel-url")
@@ -51,6 +52,7 @@ function setMode(mode: ThumbnailMode): void {
 function renderSettings(settings: Settings): void {
   enabledControl.checked = settings.enabled
   hideShortsOnHomeControl.checked = settings.hideShortsOnHome
+  hidePlayablesControl.checked = settings.hidePlayables
   setMode(settings.mode)
   getCheckbox("disable-search").checked = settings.disabledPages.search
   getCheckbox("disable-channel").checked = settings.disabledPages.channel
@@ -107,6 +109,7 @@ function readSettings(current: Settings): Settings {
   return mergeOptions(current, {
     enabled: enabledControl.checked,
     hideShortsOnHome: hideShortsOnHomeControl.checked,
+    hidePlayables: hidePlayablesControl.checked,
     mode: getModeControl().value as ThumbnailMode,
       disabledPages: {
       search: getCheckbox("disable-search").checked,

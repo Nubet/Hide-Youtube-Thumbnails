@@ -31,6 +31,10 @@ export function shouldHideShorts(
   return settings.hideShortsOnHome && pageType === "home"
 }
 
+export function shouldHidePlayables(settings: Settings): boolean {
+  return settings.hidePlayables
+}
+
 export function createRuntimeState(
   settings: Settings,
   pageType: PageType,
@@ -42,6 +46,7 @@ export function createRuntimeState(
     enabled: isEnabled(settings, pageType, channelKey),
     mode: settings.mode,
     hideShorts: shouldHideShorts(settings, pageType),
+    hidePlayables: shouldHidePlayables(settings),
   }
 
   if (pageType === "channel" && channelKey) {

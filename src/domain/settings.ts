@@ -14,6 +14,7 @@ export type Settings = {
   schemaVersion: typeof SETTINGS_SCHEMA_VERSION
   enabled: boolean
   hideShortsOnHome: boolean
+  hidePlayables: boolean
   mode: ThumbnailMode
   disabledPages: DisabledPages
   whitelistedChannels: string[]
@@ -23,6 +24,7 @@ export const defaultSettings: Settings = {
   schemaVersion: SETTINGS_SCHEMA_VERSION,
   enabled: true,
   hideShortsOnHome: true,
+  hidePlayables: true,
   mode: "hidden",
   disabledPages: {
     search: false,
@@ -75,6 +77,7 @@ export function normalizeSettings(value: unknown): Settings {
     schemaVersion: SETTINGS_SCHEMA_VERSION,
     enabled: readBoolean(value.enabled, defaultSettings.enabled),
     hideShortsOnHome: readBoolean(value.hideShortsOnHome, defaultSettings.hideShortsOnHome),
+    hidePlayables: readBoolean(value.hidePlayables, defaultSettings.hidePlayables),
     mode: isThumbnailMode(value.mode) ? value.mode : defaultSettings.mode,
     disabledPages: readDisabledPages(value.disabledPages),
     whitelistedChannels: readWhitelistedChannels(value.whitelistedChannels),

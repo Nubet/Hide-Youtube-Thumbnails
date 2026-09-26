@@ -4,6 +4,7 @@ import type { ThumbnailMode } from "../domain/thumbnail-mode"
 export type OptionsFormValues = {
   enabled: boolean
   hideShortsOnHome: boolean
+  hidePlayables: boolean
   mode: ThumbnailMode
   disabledPages: Settings["disabledPages"]
   whitelistedChannels: string[]
@@ -17,6 +18,7 @@ export function mergeOptions(
     ...current,
     enabled: values.enabled,
     hideShortsOnHome: values.hideShortsOnHome,
+    hidePlayables: values.hidePlayables,
     mode: values.mode,
     disabledPages: values.disabledPages,
     whitelistedChannels: values.whitelistedChannels,

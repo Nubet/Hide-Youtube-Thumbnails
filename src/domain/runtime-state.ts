@@ -6,6 +6,7 @@ export type RuntimeState = {
   pageType: PageType
   enabled: boolean
   hideShorts: boolean
+  hidePlayables: boolean
   mode: ThumbnailMode
   channelVideosKey?: string
   channelWhitelisted?: boolean

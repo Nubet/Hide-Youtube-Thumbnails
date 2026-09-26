@@ -58,3 +58,7 @@ html[data-hyt-mode="solid-color"] .shortsLockupViewModelHostThumbnailContainer i
 [data-hyt-shorts-hidden="true"] {
   display: none !important;
 }
+
+[data-hyt-playables-hidden="true"] {
+  display: none !important;
+}

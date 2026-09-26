@@ -9,11 +9,13 @@ import { classifyPage } from "./page-classifier"
 import { StyleState } from "./style-state"
 import { getChannelVideosKey } from "../domain/channel-whitelist"
 import { ShortsState } from "./shorts-state"
+import { PlayablesState } from "./playables-state"
 
 export default function mountContentScript(): () => void {
   const root = document.documentElement
   const styleState = new StyleState(root)
   const shortsState = new ShortsState(document)
+  const playablesState = new PlayablesState(document)
   const settingsRepository = new SettingsRepository()
   const diagnostics = new Diagnostics(document)
   let lastNavigation = "initial"
@@ -21,6 +23,7 @@ export default function mountContentScript(): () => void {
     settingsRepository,
     styleState,
     shortsState,
+    playablesState,
     getLocation: () => window.location,
     classify: classifyPage,
     subscribeToStorageChanges,
@@ -48,6 +51,8 @@ export default function mountContentScript(): () => void {
       await settingsRepository.save({ ...settings, enabled: message.enabled })
     } else if (message.type === "set-hide-shorts-on-home") {
       await settingsRepository.save({ ...settings, hideShortsOnHome: message.enabled })
+    } else if (message.type === "set-hide-playables") {
+      await settingsRepository.save({ ...settings, hidePlayables: message.enabled })
     } else if (message.type === "set-thumbnail-mode") {
       if (!isThumbnailMode(message.mode)) {
         return { ok: false, error: "Unsupported thumbnail mode" }

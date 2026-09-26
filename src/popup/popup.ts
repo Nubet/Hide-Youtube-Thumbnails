@@ -15,6 +15,7 @@ function getRequiredElement<T extends Element>(selector: string): T {
 const enabledControl = getRequiredElement<HTMLInputElement>("#enabled")
 const modeControl = getRequiredElement<HTMLSelectElement>("#mode")
 const hideShortsOnHomeControl = getRequiredElement<HTMLInputElement>("#hide-shorts-on-home")
+const hidePlayablesControl = getRequiredElement<HTMLInputElement>("#hide-playables")
 const pageStatus = getRequiredElement<HTMLParagraphElement>("#page-status")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
 const channelAction = getRequiredElement<HTMLButtonElement>("#channel-action")
@@ -39,6 +40,7 @@ async function loadStoredSettings(): Promise<void> {
   enabledControl.checked = settings.enabled
   modeControl.value = settings.mode
   hideShortsOnHomeControl.checked = settings.hideShortsOnHome
+  hidePlayablesControl.checked = settings.hidePlayables
   whitelistedChannels = settings.whitelistedChannels
   renderChannelList()
 }
@@ -168,6 +170,8 @@ async function saveStoredSetting(
     await settingsRepository.save({ ...settings, enabled: message.enabled })
   } else if (message.type === "set-hide-shorts-on-home") {
     await settingsRepository.save({ ...settings, hideShortsOnHome: message.enabled })
+  } else if (message.type === "set-hide-playables") {
+    await settingsRepository.save({ ...settings, hidePlayables: message.enabled })
   } else if (message.type === "set-thumbnail-mode") {
     await settingsRepository.save({ ...settings, mode: message.mode })
   }
@@ -180,7 +184,7 @@ async function update(message: Parameters<typeof sendMessageToActiveTab>[0]): Pr
     const response = await sendMessageToActiveTab(message)
     const error = responseError(response)
     if (error) {
-      if (message.type === "set-enabled" || message.type === "set-thumbnail-mode" || message.type === "set-hide-shorts-on-home") {
+      if (message.type === "set-enabled" || message.type === "set-thumbnail-mode" || message.type === "set-hide-shorts-on-home" || message.type === "set-hide-playables") {
         await saveStoredSetting(message)
         status.textContent = "Saved. Reload YouTube to apply it"
       } else {
@@ -197,7 +201,7 @@ async function update(message: Parameters<typeof sendMessageToActiveTab>[0]): Pr
         "Thumbnails are visible on this channel's Videos tab and hidden everywhere else."
     }
   } catch (error) {
-    if (message.type === "set-enabled" || message.type === "set-thumbnail-mode" || message.type === "set-hide-shorts-on-home") {
+    if (message.type === "set-enabled" || message.type === "set-thumbnail-mode" || message.type === "set-hide-shorts-on-home" || message.type === "set-hide-playables") {
       await saveStoredSetting(message)
       status.textContent = "Saved. Reload YouTube to apply it"
       return
@@ -223,6 +227,10 @@ modeControl.addEventListener("change", () => {
 
 hideShortsOnHomeControl.addEventListener("change", () => {
   void update({ type: "set-hide-shorts-on-home", enabled: hideShortsOnHomeControl.checked })
+})
+
+hidePlayablesControl.addEventListener("change", () => {
+  void update({ type: "set-hide-playables", enabled: hidePlayablesControl.checked })
 })
 
 channelAction.addEventListener("click", () => {
