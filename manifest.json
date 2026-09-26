@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Control the visibility of YouTube thumbnails.",
   "icons": {
-    "48": "icons/icon48.png",
+    "48": "icons/icon512.png",
     "128": "icons/icon128.png",
     "512": "icons/icon512.png"
   },
