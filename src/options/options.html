@@ -3,12 +3,83 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hide YouTube Thumbnails settings</title>
+    <link rel="stylesheet" href="./options.css" />
+    <title>hide-youtube-thumbnails settings</title>
   </head>
   <body>
-    <main>
-      <h1>Hide YouTube Thumbnails</h1>
-      <p>Settings will be available here.</p>
+    <main aria-labelledby="title">
+      <header>
+        <p class="eyebrow">Extension settings</p>
+        <h1 id="title">hide-youtube-thumbnails</h1>
+        <p>Control how YouTube thumbnails are displayed.</p>
+      </header>
+
+      <form id="settings-form">
+        <section class="panel">
+          <label class="switch-row" for="enabled">
+            <span>
+              <strong>Enable extension</strong>
+              <small>Apply thumbnail settings on YouTube pages.</small>
+            </span>
+            <input id="enabled" name="enabled" type="checkbox" />
+          </label>
+        </section>
+
+        <fieldset class="panel">
+          <legend>Thumbnail mode</legend>
+          <label class="choice" for="mode-hidden">
+            <input id="mode-hidden" name="mode" type="radio" value="hidden" />
+            <span><strong>Hidden</strong><small>Remove the thumbnail area completely.</small></span>
+          </label>
+          <label class="choice" for="mode-hover">
+            <input id="mode-hover" name="mode" type="radio" value="hidden-except-hover" />
+            <span><strong>Hidden on hover</strong><small>Show the thumbnail only while hovering over a video.</small></span>
+          </label>
+          <label class="choice" for="mode-blurred">
+            <input id="mode-blurred" name="mode" type="radio" value="blurred" />
+            <span><strong>Blurred</strong><small>Keep the layout while hiding image details.</small></span>
+          </label>
+          <label class="choice" for="mode-solid">
+            <input id="mode-solid" name="mode" type="radio" value="solid-color" />
+            <span><strong>Solid color</strong><small>Replace thumbnails with a theme-compatible color.</small></span>
+          </label>
+          <label class="choice" for="mode-normal">
+            <input id="mode-normal" name="mode" type="radio" value="normal" />
+            <span><strong>Normal</strong><small>Show thumbnails without visual changes.</small></span>
+          </label>
+        </fieldset>
+
+        <fieldset class="panel">
+          <legend>Disable extension on</legend>
+          <label class="choice compact" for="disable-search">
+            <input id="disable-search" name="disable-search" type="checkbox" />
+            <span>Search results</span>
+          </label>
+          <label class="choice compact" for="disable-channel">
+            <input id="disable-channel" name="disable-channel" type="checkbox" />
+            <span>Channel pages</span>
+          </label>
+          <label class="choice compact" for="disable-playlist">
+            <input id="disable-playlist" name="disable-playlist" type="checkbox" />
+            <span>Playlist pages</span>
+          </label>
+          <label class="choice compact" for="disable-watch">
+            <input id="disable-watch" name="disable-watch" type="checkbox" />
+            <span>Watch pages</span>
+          </label>
+          <label class="choice compact" for="disable-subscriptions">
+            <input id="disable-subscriptions" name="disable-subscriptions" type="checkbox" />
+            <span>Subscriptions</span>
+          </label>
+        </fieldset>
+
+        <div class="actions">
+          <button type="submit">Save settings</button>
+          <button id="reset" type="button" class="secondary">Reset</button>
+        </div>
+        <p id="status" role="status" aria-live="polite"></p>
+      </form>
     </main>
+    <script type="module" src="./options.ts"></script>
   </body>
 </html>
