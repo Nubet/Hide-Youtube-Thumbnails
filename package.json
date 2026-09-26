@@ -1,0 +1,19 @@
+{
+  "name": "hide-youtube-thumbnails",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A browser extension for hiding YouTube thumbnails.",
+  "type": "module",
+  "scripts": {
+    "dev": "extension dev",
+    "start": "extension start",
+    "build": "extension build --browser=chrome,firefox --zip",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "extension": "4.1.26",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}
