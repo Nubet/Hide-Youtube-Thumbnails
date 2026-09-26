@@ -25,6 +25,7 @@ export type RuntimeControllerDependencies = {
   classify: (location: PathLocation) => PageType
   subscribeToStorageChanges?: StorageChangeSubscription
   subscribeToNavigationChanges?: EventSubscription
+  onStateApplied?: (state: RuntimeState) => void
 }
 
 export class RuntimeController {
@@ -64,6 +65,7 @@ export class RuntimeController {
 
     this.currentState = state
     this.dependencies.styleState.apply(state)
+    this.dependencies.onStateApplied?.(state)
   }
 
   public getState(): RuntimeState | undefined {

@@ -3,6 +3,7 @@ import { subscribeToStorageChanges } from "../infrastructure/browser-api"
 import { subscribeToNavigationEvents } from "../infrastructure/navigation-events"
 import { subscribeToMessages } from "../infrastructure/message-bus"
 import { SettingsRepository } from "../infrastructure/settings-repository"
+import { Diagnostics } from "./diagnostics"
 import { isThumbnailMode } from "../domain/thumbnail-mode"
 import { classifyPage } from "./page-classifier"
 import { StyleState } from "./style-state"
@@ -11,6 +12,8 @@ export default function mountContentScript(): () => void {
   const root = document.documentElement
   const styleState = new StyleState(root)
   const settingsRepository = new SettingsRepository()
+  const diagnostics = new Diagnostics(document)
+  let lastNavigation = "initial"
   const controller = new RuntimeController({
     settingsRepository,
     styleState,
@@ -18,7 +21,11 @@ export default function mountContentScript(): () => void {
     classify: classifyPage,
     subscribeToStorageChanges,
     subscribeToNavigationChanges: (listener) =>
-      subscribeToNavigationEvents(window, listener),
+      subscribeToNavigationEvents(window, () => {
+        lastNavigation = new Date().toISOString()
+        listener()
+      }),
+    onStateApplied: (state) => diagnostics.record(state, lastNavigation),
   })
 
   controller.start()

@@ -23,7 +23,7 @@ type MessageApi = {
 function getMessageApi(): MessageApi {
   const extensionApi = globalThis.browser ?? globalThis.chrome
 
-  if (!extensionApi?.runtime?.onMessage || !extensionApi?.tabs) {
+  if (!extensionApi?.runtime?.onMessage) {
     throw new Error("Browser messaging API is unavailable")
   }
 
@@ -41,6 +41,11 @@ export async function sendMessageToActiveTab(
   message: ExtensionMessage,
 ): Promise<ExtensionResponse> {
   const api = getMessageApi()
+
+  if (!api.tabs) {
+    throw new Error("Browser tabs API is unavailable")
+  }
+
   const [activeTab] = await api.tabs.query({ active: true, currentWindow: true })
 
   if (activeTab?.id === undefined) {

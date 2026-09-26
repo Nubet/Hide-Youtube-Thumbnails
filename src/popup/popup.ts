@@ -1,4 +1,5 @@
 import { sendMessageToActiveTab } from "../infrastructure/message-bus"
+import { SettingsRepository } from "../infrastructure/settings-repository"
 import type { ExtensionResponse } from "../shared/messages"
 
 function getRequiredElement<T extends Element>(selector: string): T {
@@ -12,13 +13,18 @@ const modeControl = getRequiredElement<HTMLSelectElement>("#mode")
 const pageStatus = getRequiredElement<HTMLParagraphElement>("#page-status")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
 const disablePageButton = getRequiredElement<HTMLButtonElement>("#disable-page")
+const settingsRepository = new SettingsRepository()
 
 function showError(message: string): void {
-  pageStatus.textContent = "This page is unavailable."
+  pageStatus.textContent = "Page controls are unavailable."
   status.textContent = message
-  enabledControl.disabled = true
-  modeControl.disabled = true
   disablePageButton.disabled = true
+}
+
+async function loadStoredSettings(): Promise<void> {
+  const settings = await settingsRepository.load()
+  enabledControl.checked = settings.enabled
+  modeControl.value = settings.mode
 }
 
 function responseError(response: ExtensionResponse): string | undefined {
@@ -27,11 +33,12 @@ function responseError(response: ExtensionResponse): string | undefined {
 
 async function loadRuntimeState(): Promise<void> {
   try {
+    await loadStoredSettings()
     const response = await sendMessageToActiveTab({ type: "get-runtime-state" })
     const error = responseError(response)
 
     if (error || !response.ok || !("state" in response)) {
-      showError(error ?? "Runtime state is unavailable")
+      showError(error ?? "Runtime state is unavailable. Settings remain available")
       return
     }
 
@@ -41,7 +48,21 @@ async function loadRuntimeState(): Promise<void> {
     disablePageButton.disabled = !["search", "channel", "playlist", "watch", "subscriptions"]
       .includes(response.state.pageType)
   } catch (error) {
-    showError(error instanceof Error ? error.message : "Communication failed")
+    showError(
+      "The YouTube page is not connected. Reload the page if you just reloaded the extension",
+    )
+  }
+}
+
+async function saveStoredSetting(
+  message: Parameters<typeof sendMessageToActiveTab>[0],
+): Promise<void> {
+  const settings = await settingsRepository.load()
+
+  if (message.type === "set-enabled") {
+    await settingsRepository.save({ ...settings, enabled: message.enabled })
+  } else if (message.type === "set-thumbnail-mode") {
+    await settingsRepository.save({ ...settings, mode: message.mode })
   }
 }
 
@@ -51,8 +72,22 @@ async function update(message: Parameters<typeof sendMessageToActiveTab>[0]): Pr
   try {
     const response = await sendMessageToActiveTab(message)
     const error = responseError(response)
-    status.textContent = error ?? "Saved"
+    if (error) {
+      if (message.type === "set-enabled" || message.type === "set-thumbnail-mode") {
+        await saveStoredSetting(message)
+        status.textContent = "Saved. Reload YouTube to apply it"
+      } else {
+        status.textContent = error
+      }
+      return
+    }
+    status.textContent = "Saved"
   } catch (error) {
+    if (message.type === "set-enabled" || message.type === "set-thumbnail-mode") {
+      await saveStoredSetting(message)
+      status.textContent = "Saved. Reload YouTube to apply it"
+      return
+    }
     status.textContent = error instanceof Error ? error.message : "Communication failed"
   }
 }
