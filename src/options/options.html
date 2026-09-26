@@ -73,6 +73,32 @@
           </label>
         </fieldset>
 
+        <section class="panel" aria-labelledby="whitelist-title">
+          <div>
+            <h2 id="whitelist-title">Show thumbnails on selected channels</h2>
+            <p class="help-text">
+              Add a channel's <strong>/videos</strong> URL to show thumbnails only while browsing
+              that channel's videos. Thumbnails will stay hidden on the home page, search results,
+              and other channels.
+            </p>
+          </div>
+          <div class="whitelist-entry">
+            <label for="channel-url">Channel videos URL</label>
+            <div class="input-row">
+              <input
+                id="channel-url"
+                type="url"
+                inputmode="url"
+                placeholder="https://www.youtube.com/@example/videos"
+                autocomplete="off"
+              />
+              <button id="add-channel" type="button">Add channel</button>
+            </div>
+            <small>Use the channel's Videos tab URL, not the homepage URL.</small>
+          </div>
+          <ul id="whitelist-list" class="whitelist-list" aria-live="polite"></ul>
+        </section>
+
         <div class="actions">
           <button type="submit">Save settings</button>
           <button id="reset" type="button" class="secondary">Reset</button>

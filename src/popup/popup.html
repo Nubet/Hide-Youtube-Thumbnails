@@ -25,7 +25,33 @@
         <option value="normal">Normal</option>
       </select>
 
-      <button id="disable-page" type="button">Disable on this page</button>
+      <section class="channel-action" aria-labelledby="channel-action-title">
+        <h2 id="channel-action-title">Channel thumbnail exception</h2>
+        <p id="channel-action-help">
+          Show thumbnails only while browsing this channel's Videos tab. They stay hidden
+          everywhere else.
+        </p>
+        <button id="channel-action" type="button">Show thumbnails for this channel's videos</button>
+      </section>
+
+      <section class="channel-list" aria-labelledby="channel-list-title">
+        <h2 id="channel-list-title">Saved channel exceptions</h2>
+        <p>Thumbnails are shown only on each channel's <strong>/videos</strong> page.</p>
+        <div class="channel-entry">
+          <label for="channel-url">Add a channel's Videos URL</label>
+          <div class="input-row">
+            <input
+              id="channel-url"
+              type="url"
+              inputmode="url"
+              placeholder="youtube.com/@example/videos"
+              autocomplete="off"
+            />
+            <button id="add-channel" type="button">Add</button>
+          </div>
+        </div>
+        <ul id="channel-list" aria-live="polite"></ul>
+      </section>
       <p id="status" role="status" aria-live="polite"></p>
     </main>
     <script type="module" src="./popup.ts"></script>

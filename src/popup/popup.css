@@ -1,7 +1,10 @@
 body {
-  min-width: 280px;
+  width: 320px;
+  max-height: 560px;
   margin: 0;
   padding: 16px;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
 main {
@@ -14,7 +17,124 @@ h1 {
   font-size: 16px;
 }
 
+h2 {
+  margin: 0;
+  font-size: 14px;
+}
+
+p {
+  margin: 0;
+  color: #555;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.channel-action {
+  display: grid;
+  gap: 8px;
+  padding-top: 4px;
+  border-top: 1px solid #ddd;
+}
+
+.channel-action button {
+  min-height: 38px;
+  padding: 6px 10px;
+  white-space: normal;
+}
+
+.channel-action a {
+  color: inherit;
+  font-size: 12px;
+}
+
+.channel-list {
+  display: grid;
+  gap: 8px;
+  padding-top: 4px;
+  border-top: 1px solid #ddd;
+}
+
+.channel-entry {
+  display: grid;
+  gap: 5px;
+}
+
+.input-row {
+  display: flex;
+  gap: 6px;
+}
+
+.input-row input {
+  min-width: 0;
+  flex: 1;
+  min-height: 34px;
+  padding: 0 8px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.input-row button {
+  padding: 4px 10px;
+}
+
+#channel-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#channel-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+#channel-list li span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-channel {
+  min-height: 28px;
+  padding: 3px 7px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.empty-state {
+  color: #666;
+  font-size: 12px;
+}
+
 button,
 select {
   min-height: 32px;
+}
+
+@media (prefers-color-scheme: dark) {
+  p,
+  .empty-state {
+    color: #aaa;
+  }
+
+  .channel-action,
+  .channel-list {
+    border-color: #444;
+  }
+
+  .input-row input,
+  #channel-list li {
+    border-color: #444;
+    color: inherit;
+    background: #222;
+  }
 }

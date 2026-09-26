@@ -5,7 +5,7 @@ export type ExtensionMessage =
   | { type: "get-runtime-state" }
   | { type: "set-enabled"; enabled: boolean }
   | { type: "set-thumbnail-mode"; mode: ThumbnailMode }
-  | { type: "disable-on-current-page" }
+  | { type: "add-current-channel" }
 
 export type ExtensionResponse =
   | { ok: true; state: RuntimeState }

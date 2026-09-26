@@ -2,6 +2,7 @@ import { defaultSettings, type Settings } from "../domain/settings"
 import { createRuntimeState } from "../domain/policy"
 import type { RuntimeState } from "../domain/runtime-state"
 import type { PageType } from "../domain/page-type"
+import { getChannelVideosKey } from "../domain/channel-whitelist"
 import type {
   PathLocation,
   EventSubscription,
@@ -61,7 +62,11 @@ export class RuntimeController {
     if (version !== this.refreshVersion) return
 
     const pageType = this.dependencies.classify(this.dependencies.getLocation())
-    const state = createRuntimeState(settings, pageType)
+    const state = createRuntimeState(
+      settings,
+      pageType,
+      getChannelVideosKey(this.dependencies.getLocation().pathname),
+    )
 
     this.currentState = state
     this.dependencies.styleState.apply(state)

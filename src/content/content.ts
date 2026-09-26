@@ -7,6 +7,7 @@ import { Diagnostics } from "./diagnostics"
 import { isThumbnailMode } from "../domain/thumbnail-mode"
 import { classifyPage } from "./page-classifier"
 import { StyleState } from "./style-state"
+import { getChannelVideosKey } from "../domain/channel-whitelist"
 
 export default function mountContentScript(): () => void {
   const root = document.documentElement
@@ -47,18 +48,18 @@ export default function mountContentScript(): () => void {
         return { ok: false, error: "Unsupported thumbnail mode" }
       }
       await settingsRepository.save({ ...settings, mode: message.mode })
-    } else if (message.type === "disable-on-current-page") {
-      const pageType = classifyPage(window.location)
-      if (!(pageType in settings.disabledPages)) {
-        return { ok: false, error: `Cannot disable extension on ${pageType}` }
+    } else if (message.type === "add-current-channel") {
+      const channelKey = getChannelVideosKey(window.location.pathname)
+      if (!channelKey) {
+        return {
+          ok: false,
+          error: "Open a channel's Videos tab to add it to the thumbnail exceptions",
+        }
       }
 
       await settingsRepository.save({
         ...settings,
-        disabledPages: {
-          ...settings.disabledPages,
-          [pageType as keyof typeof settings.disabledPages]: true,
-        },
+        whitelistedChannels: [...new Set([...settings.whitelistedChannels, channelKey])],
       })
     }
 

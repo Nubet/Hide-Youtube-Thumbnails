@@ -15,6 +15,7 @@ export type Settings = {
   enabled: boolean
   mode: ThumbnailMode
   disabledPages: DisabledPages
+  whitelistedChannels: string[]
 }
 
 export const defaultSettings: Settings = {
@@ -28,6 +29,7 @@ export const defaultSettings: Settings = {
     watch: false,
     subscriptions: false,
   },
+  whitelistedChannels: [],
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -53,6 +55,12 @@ function readDisabledPages(value: unknown): DisabledPages {
   }
 }
 
+function readWhitelistedChannels(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
+
+  return [...new Set(value.filter((item): item is string => typeof item === "string"))]
+}
+
 export function normalizeSettings(value: unknown): Settings {
   if (!isRecord(value)) return structuredClone(defaultSettings)
 
@@ -66,5 +74,6 @@ export function normalizeSettings(value: unknown): Settings {
     enabled: readBoolean(value.enabled, defaultSettings.enabled),
     mode: isThumbnailMode(value.mode) ? value.mode : defaultSettings.mode,
     disabledPages: readDisabledPages(value.disabledPages),
+    whitelistedChannels: readWhitelistedChannels(value.whitelistedChannels),
   }
 }

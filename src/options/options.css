@@ -22,6 +22,11 @@ h1 {
   letter-spacing: -0.04em;
 }
 
+h2 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+}
+
 .eyebrow {
   margin-bottom: 4px;
   color: #666;
@@ -74,6 +79,70 @@ small {
   font-size: 0.875rem;
 }
 
+.help-text {
+  color: #555;
+}
+
+.whitelist-entry {
+  display: grid;
+  gap: 6px;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.input-row input {
+  min-width: 0;
+  flex: 1;
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+}
+
+.whitelist-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.whitelist-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+}
+
+.whitelist-list li span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove-channel {
+  min-height: 32px;
+  padding: 0 10px;
+  color: #111;
+  background: transparent;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.empty-state {
+  color: #666;
+  font-size: 0.9rem;
+}
+
 .compact {
   min-height: 28px;
 }
@@ -123,13 +192,20 @@ input:focus-visible {
 
   .eyebrow,
   small,
-  #status {
+  #status,
+  .help-text,
+  .empty-state {
     color: #aaa;
   }
 
   .panel {
     border-color: #383838;
     background: #222;
+  }
+
+  .input-row input,
+  .whitelist-list li {
+    border-color: #383838;
   }
 
   input {
@@ -145,5 +221,12 @@ input:focus-visible {
   button.secondary {
     color: #f5f5f5;
     background: transparent;
+  }
+}
+
+@media (max-width: 560px) {
+  .input-row {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

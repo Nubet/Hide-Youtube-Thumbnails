@@ -5,6 +5,7 @@ export type OptionsFormValues = {
   enabled: boolean
   mode: ThumbnailMode
   disabledPages: Settings["disabledPages"]
+  whitelistedChannels: string[]
 }
 
 export function mergeOptions(
@@ -16,5 +17,6 @@ export function mergeOptions(
     enabled: values.enabled,
     mode: values.mode,
     disabledPages: values.disabledPages,
+    whitelistedChannels: values.whitelistedChannels,
   }
 }
