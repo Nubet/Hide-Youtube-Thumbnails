@@ -8,16 +8,17 @@ import { isThumbnailMode } from "../domain/thumbnail-mode"
 import { classifyPage } from "./page-classifier"
 import { StyleState } from "./style-state"
 import { getChannelVideosKey } from "../domain/channel-whitelist"
-import { ShortsState } from "./shorts-state"
 import { PlayablesState } from "./playables-state"
+import { ShortsState } from "./shorts-state"
 import { HoverRevealState } from "./hover-reveal-state"
 import { HoverPreviewState } from "./hover-preview-state"
+import { disableablePages } from "../domain/page-type"
 
 export default function mountContentScript(): () => void {
   const root = document.documentElement
   const styleState = new StyleState(root)
-  const shortsState = new ShortsState(document)
   const playablesState = new PlayablesState(document)
+  const shortsState = new ShortsState(document)
   const hoverRevealState = new HoverRevealState(document)
   const hoverPreviewState = new HoverPreviewState(document)
   const settingsRepository = new SettingsRepository()
@@ -26,8 +27,8 @@ export default function mountContentScript(): () => void {
   const controller = new RuntimeController({
     settingsRepository,
     styleState,
-    shortsState,
     playablesState,
+    shortsState,
     hoverRevealState,
     hoverPreviewState,
     getLocation: () => window.location,
@@ -70,6 +71,15 @@ export default function mountContentScript(): () => void {
       await settingsRepository.save({ ...settings, hoverDelay: message.delay })
     } else if (message.type === "set-autoplay-preview") {
       await settingsRepository.save({ ...settings, autoplayPreview: message.enabled })
+    } else if (message.type === "set-page-enabled") {
+      if (!disableablePages.includes(message.page)) {
+        return { ok: false, error: "Unsupported YouTube page" }
+      }
+
+      await settingsRepository.save({
+        ...settings,
+        disabledPages: { ...settings.disabledPages, [message.page]: !message.enabled },
+      })
     } else if (message.type === "add-current-channel") {
       const channelKey = getChannelVideosKey(window.location.pathname)
       if (!channelKey) {

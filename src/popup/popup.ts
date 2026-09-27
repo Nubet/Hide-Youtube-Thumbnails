@@ -1,12 +1,13 @@
 import { sendMessageToActiveTab } from "../infrastructure/message-bus"
 import { SettingsRepository } from "../infrastructure/settings-repository"
-import { DEFAULT_SOLID_COLOR } from "../domain/settings"
+import { DEFAULT_SOLID_COLOR, defaultSettings } from "../domain/settings"
 import { usesHoverReveal } from "../domain/thumbnail-mode"
 import {
   formatChannelVideosUrl,
   parseChannelWhitelistInput,
 } from "../domain/channel-whitelist"
 import type { ExtensionResponse } from "../shared/messages"
+import { disableablePages, pageLabels, type DisableablePage } from "../domain/page-type"
 
 function getRequiredElement<T extends Element>(selector: string): T {
   const element = document.querySelector<T>(selector)
@@ -25,6 +26,11 @@ const hoverPreviewControl = getRequiredElement<HTMLLabelElement>("#hover-preview
 const autoplayPreviewInput = getRequiredElement<HTMLInputElement>("#autoplay-preview")
 const hideShortsOnHomeControl = getRequiredElement<HTMLInputElement>("#hide-shorts-on-home")
 const hidePlayablesControl = getRequiredElement<HTMLInputElement>("#hide-playables")
+const currentPageControl = getRequiredElement<HTMLLabelElement>("#current-page-control")
+const currentPageTitle = getRequiredElement<HTMLHeadingElement>("#current-page-title")
+const currentPageHelp = getRequiredElement<HTMLParagraphElement>("#current-page-help")
+const currentPageEnabled = getRequiredElement<HTMLInputElement>("#current-page-enabled")
+const pageList = getRequiredElement<HTMLDivElement>("#page-list")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
 const channelAction = getRequiredElement<HTMLButtonElement>("#channel-action")
 const channelActionHelp = getRequiredElement<HTMLParagraphElement>("#channel-action-help")
@@ -35,6 +41,8 @@ const settingsRepository = new SettingsRepository()
 let whitelistedChannels: string[] = []
 let currentChannelKey: string | undefined
 let whitelistSaving = false
+let currentPage: DisableablePage | undefined
+let storedSettings = structuredClone(defaultSettings)
 
 function showError(message: string): void {
   status.textContent = message
@@ -51,9 +59,62 @@ async function loadStoredSettings(): Promise<void> {
   autoplayPreviewInput.checked = settings.autoplayPreview
   hideShortsOnHomeControl.checked = settings.hideShortsOnHome
   hidePlayablesControl.checked = settings.hidePlayables
+  storedSettings = settings
   whitelistedChannels = settings.whitelistedChannels
+  renderPageExceptions()
   renderChannelList()
   renderModeControls()
+}
+
+function renderPageExceptions(): void {
+  pageList.replaceChildren()
+
+  for (const page of disableablePages) {
+    const label = document.createElement("label")
+    const content = document.createElement("span")
+    const title = document.createElement("span")
+    const description = document.createElement("small")
+    const toggle = document.createElement("span")
+    const input = document.createElement("input")
+    const slider = document.createElement("span")
+
+    label.className = "setting-item"
+    content.className = "setting-content"
+    title.className = "setting-title"
+    description.className = "setting-desc"
+    toggle.className = "toggle"
+    input.type = "checkbox"
+    input.checked = !storedSettings.disabledPages[page]
+    input.setAttribute("aria-label", `Run on ${pageLabels[page]}`)
+    slider.className = "slider"
+    title.textContent = pageLabels[page]
+    description.textContent = storedSettings.disabledPages[page] ? "Disabled" : "Enabled"
+
+    input.addEventListener("change", () => {
+      void update({ type: "set-page-enabled", page, enabled: input.checked })
+    })
+
+    content.append(title, description)
+    toggle.append(input, slider)
+    label.append(content, toggle)
+    pageList.append(label)
+  }
+}
+
+function renderCurrentPage(): void {
+  if (!currentPage) {
+    currentPageControl.hidden = true
+    currentPageTitle.textContent = "This page is not managed"
+    currentPageHelp.textContent = "Page-specific controls are available on supported YouTube views."
+    return
+  }
+
+  currentPageControl.hidden = false
+  currentPageTitle.textContent = pageLabels[currentPage]
+  currentPageEnabled.checked = !storedSettings.disabledPages[currentPage]
+  currentPageHelp.textContent = currentPageEnabled.checked
+    ? "The extension is active here. Turn it off for this page only."
+    : "The extension is disabled here. Turn it on to show the configured thumbnail behavior."
 }
 
 function renderModeControls(): void {
@@ -177,8 +238,12 @@ async function loadRuntimeState(): Promise<void> {
     hoverDelayInput.value = response.state.hoverDelay
     autoplayPreviewInput.checked = response.state.autoplayPreview
     renderModeControls()
+    currentPage = disableablePages.includes(response.state.pageType as DisableablePage)
+      ? response.state.pageType as DisableablePage
+      : undefined
+    renderCurrentPage()
     renderChannelAction(response.state)
-  } catch (error) {
+  } catch {
     showError(
       "The YouTube page is not connected. Reload the page if you just reloaded the extension",
     )
@@ -204,6 +269,11 @@ async function saveStoredSetting(
     await settingsRepository.save({ ...settings, hoverDelay: message.delay })
   } else if (message.type === "set-autoplay-preview") {
     await settingsRepository.save({ ...settings, autoplayPreview: message.enabled })
+  } else if (message.type === "set-page-enabled") {
+    await settingsRepository.save({
+      ...settings,
+      disabledPages: { ...settings.disabledPages, [message.page]: !message.enabled },
+    })
   }
 }
 
@@ -223,6 +293,9 @@ async function update(message: Parameters<typeof sendMessageToActiveTab>[0]): Pr
       return
     }
     status.textContent = "Saved"
+    storedSettings = await settingsRepository.load()
+    renderPageExceptions()
+    renderCurrentPage()
     if (message.type === "add-current-channel") {
       await loadStoredSettings()
       channelAction.disabled = true
@@ -281,6 +354,11 @@ hideShortsOnHomeControl.addEventListener("change", () => {
 
 hidePlayablesControl.addEventListener("change", () => {
   void update({ type: "set-hide-playables", enabled: hidePlayablesControl.checked })
+})
+
+currentPageEnabled.addEventListener("change", () => {
+  if (!currentPage) return
+  void update({ type: "set-page-enabled", page: currentPage, enabled: currentPageEnabled.checked })
 })
 
 channelAction.addEventListener("click", () => {

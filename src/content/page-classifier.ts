@@ -11,7 +11,13 @@ export function classifyPage(location: PathLocation): PageType {
   if (pathname === "/watch") return "watch"
   if (pathname === "/playlist") return "playlist"
   if (pathname === "/feed/subscriptions") return "subscriptions"
+  if (pathname === "/feed/trending") return "trending"
+  if (pathname === "/feed/history") return "history"
+  if (pathname === "/feed/explore") return "explore"
   if (pathname === "/shorts" || pathname.startsWith("/shorts/")) return "shorts"
+  if (pathname === "/gaming") return "gaming"
+  if (pathname === "/music") return "music"
+  if (pathname === "/live") return "live"
 
   if (
     pathname.startsWith("/@") ||
@@ -19,7 +25,10 @@ export function classifyPage(location: PathLocation): PageType {
     pathname.startsWith("/c/") ||
     pathname.startsWith("/user/")
   ) {
-    return "channel"
+    if (/\/videos\/?$/.test(pathname)) return "channel-videos"
+    if (/\/streams\/?$/.test(pathname)) return "channel-streams"
+    if (/\/shorts\/?$/.test(pathname)) return "other"
+    return "channel-home"
   }
 
   return "other"

@@ -1,16 +1,11 @@
 import { isThumbnailMode, type ThumbnailMode } from "./thumbnail-mode"
 import { isHoverDelay, type HoverDelay } from "./hover-delay"
+import { disableablePages, type DisableablePage } from "./page-type"
 
-export const SETTINGS_SCHEMA_VERSION = 1 as const
+export const SETTINGS_SCHEMA_VERSION = 2 as const
 export const DEFAULT_SOLID_COLOR = "#e5e5ea" as const
 
-export type DisabledPages = {
-  search: boolean
-  channel: boolean
-  playlist: boolean
-  watch: boolean
-  subscriptions: boolean
-}
+export type DisabledPages = Record<DisableablePage, boolean>
 
 export type Settings = {
   schemaVersion: typeof SETTINGS_SCHEMA_VERSION
@@ -34,14 +29,12 @@ export const defaultSettings: Settings = {
   solidColor: DEFAULT_SOLID_COLOR,
   hoverDelay: "instant",
   autoplayPreview: false,
-  disabledPages: {
-    search: false,
-    channel: false,
-    playlist: false,
-    watch: false,
-    subscriptions: false,
-  },
+  disabledPages: Object.fromEntries(disableablePageEntries()) as DisabledPages,
   whitelistedChannels: [],
+}
+
+function disableablePageEntries(): Array<[DisableablePage, boolean]> {
+  return disableablePages.map((page) => [page, false])
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -60,16 +53,29 @@ function readSolidColor(value: unknown): string {
 
 function readDisabledPages(value: unknown): DisabledPages {
   const input = isRecord(value) ? value : {}
+  const legacy = {
+    search: input.search,
+    watch: input.watch,
+    playlist: input.playlist,
+    subscriptions: input.subscriptions,
+  }
 
   return {
-    search: readBoolean(input.search, defaultSettings.disabledPages.search),
-    channel: readBoolean(input.channel, defaultSettings.disabledPages.channel),
-    playlist: readBoolean(input.playlist, defaultSettings.disabledPages.playlist),
-    watch: readBoolean(input.watch, defaultSettings.disabledPages.watch),
-    subscriptions: readBoolean(
-      input.subscriptions,
-      defaultSettings.disabledPages.subscriptions,
-    ),
+    ...defaultSettings.disabledPages,
+    home: readBoolean(input.home, false),
+    search: readBoolean(legacy.search, false),
+    watch: readBoolean(legacy.watch, false),
+    playlist: readBoolean(legacy.playlist, false),
+    subscriptions: readBoolean(legacy.subscriptions, false),
+    "channel-home": readBoolean(input["channel-home"], input.channel === true),
+    "channel-videos": readBoolean(input["channel-videos"], input.channel === true),
+    "channel-streams": readBoolean(input["channel-streams"], input.channel === true),
+    trending: readBoolean(input.trending, false),
+    history: readBoolean(input.history, false),
+    explore: readBoolean(input.explore, false),
+    gaming: readBoolean(input.gaming, false),
+    music: readBoolean(input.music, false),
+    live: readBoolean(input.live, false),
   }
 }
 
@@ -83,7 +89,7 @@ export function normalizeSettings(value: unknown): Settings {
   if (!isRecord(value)) return structuredClone(defaultSettings)
 
   const schemaVersion = value.schemaVersion
-  if (schemaVersion !== undefined && schemaVersion !== SETTINGS_SCHEMA_VERSION) {
+  if (schemaVersion !== undefined && schemaVersion !== 1 && schemaVersion !== SETTINGS_SCHEMA_VERSION) {
     return structuredClone(defaultSettings)
   }
 

@@ -23,9 +23,9 @@ export function mergeOptions(
     hideShortsOnHome: values.hideShortsOnHome,
     hidePlayables: values.hidePlayables,
     mode: values.mode,
-    solidColor: values.solidColor,
-    hoverDelay: values.hoverDelay,
-    autoplayPreview: values.autoplayPreview,
+    solidColor: values.solidColor ?? current.solidColor,
+    hoverDelay: values.hoverDelay ?? current.hoverDelay,
+    autoplayPreview: values.autoplayPreview ?? current.autoplayPreview,
     disabledPages: values.disabledPages,
     whitelistedChannels: values.whitelistedChannels,
   }

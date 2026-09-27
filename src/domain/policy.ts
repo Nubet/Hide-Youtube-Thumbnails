@@ -9,19 +9,11 @@ export function isEnabled(
 ): boolean {
   if (!settings.enabled) return false
 
-  if (pageType === "channel" && channelKey) {
+  if ((pageType === "channel-home" || pageType === "channel-videos") && channelKey) {
     if (settings.whitelistedChannels.includes(channelKey)) return false
   }
 
-  const disabledByPage: Partial<Record<PageType, boolean>> = {
-    search: settings.disabledPages.search,
-    channel: settings.disabledPages.channel,
-    playlist: settings.disabledPages.playlist,
-    watch: settings.disabledPages.watch,
-    subscriptions: settings.disabledPages.subscriptions,
-  }
-
-  return disabledByPage[pageType] !== true
+  return pageType === "other" || pageType === "shorts" || settings.disabledPages[pageType] !== true
 }
 
 export function shouldHideShorts(
@@ -52,7 +44,7 @@ export function createRuntimeState(
     hidePlayables: shouldHidePlayables(settings),
   }
 
-  if (pageType === "channel" && channelKey) {
+  if ((pageType === "channel-home" || pageType === "channel-videos" || pageType === "channel-streams") && channelKey) {
     state.channelVideosKey = channelKey
     state.channelWhitelisted = settings.whitelistedChannels.includes(channelKey)
   }

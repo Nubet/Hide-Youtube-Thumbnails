@@ -77,7 +77,29 @@
         </div>
       </div>
 
-      <div class="settings-group">
+      <section class="settings-group current-page-card" aria-labelledby="current-page-title">
+        <div class="section-header">
+          <p class="eyebrow">Current YouTube page</p>
+          <h2 id="current-page-title">Checking page...</h2>
+          <p id="current-page-help" class="section-desc">You can turn the extension off for this page only.</p>
+        </div>
+        <label id="current-page-control" class="setting-item" for="current-page-enabled" hidden>
+          <span class="setting-content">
+            <span class="setting-title">Run on this page</span>
+            <span class="setting-desc">This does not change the global switch.</span>
+          </span>
+          <span class="toggle">
+            <input id="current-page-enabled" type="checkbox" />
+            <span class="slider"></span>
+          </span>
+        </label>
+      </section>
+
+      <section class="settings-group youtube-features" aria-labelledby="youtube-features-title">
+        <div class="section-header">
+          <h2 id="youtube-features-title">YouTube features</h2>
+          <p class="section-desc">Manage extra sections shown on YouTube.</p>
+        </div>
         <label class="setting-item" for="hide-shorts-on-home">
           <div class="setting-content">
             <span class="setting-title">Hide Shorts on Home</span>
@@ -99,7 +121,7 @@
             <span class="slider"></span>
           </div>
         </label>
-      </div>
+      </section>
 
       <section class="settings-group exceptions" aria-labelledby="channel-list-title">
         <div class="section-header">
@@ -125,6 +147,15 @@
           </div>
         </div>
         <ul id="channel-list" aria-live="polite"></ul>
+      </section>
+
+      <section class="settings-group page-exceptions" aria-labelledby="page-exceptions-title">
+        <div class="section-header">
+          <p class="eyebrow">Advanced</p>
+          <h2 id="page-exceptions-title">Page exceptions</h2>
+          <p class="section-desc">Choose where thumbnails should stay visible.</p>
+        </div>
+        <div id="page-list" aria-live="polite"></div>
       </section>
 
       <div class="status-container">

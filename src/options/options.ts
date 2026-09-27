@@ -44,12 +44,6 @@ function getModeControl(): HTMLInputElement {
   return selected
 }
 
-function getCheckbox(name: string): HTMLInputElement {
-  const checkbox = form.querySelector<HTMLInputElement>(`[name='${name}']`)
-  if (!checkbox) throw new Error(`Missing option: ${name}`)
-  return checkbox
-}
-
 function setMode(mode: ThumbnailMode): void {
   const control = form.querySelector<HTMLInputElement>(`input[name='mode'][value='${mode}']`)
   if (!control) throw new Error(`Missing mode option: ${mode}`)
@@ -73,11 +67,10 @@ function renderSettings(settings: Settings): void {
   solidColorInput.value = settings.solidColor
   hoverDelayInput.value = settings.hoverDelay
   autoplayPreviewInput.checked = settings.autoplayPreview
-  getCheckbox("disable-search").checked = settings.disabledPages.search
-  getCheckbox("disable-channel").checked = settings.disabledPages.channel
-  getCheckbox("disable-playlist").checked = settings.disabledPages.playlist
-  getCheckbox("disable-watch").checked = settings.disabledPages.watch
-  getCheckbox("disable-subscriptions").checked = settings.disabledPages.subscriptions
+  for (const page of Object.keys(settings.disabledPages) as Array<keyof Settings["disabledPages"]>) {
+    const checkbox = form.querySelector<HTMLInputElement>(`[data-page="${page}"]`)
+    if (checkbox) checkbox.checked = settings.disabledPages[page]
+  }
   whitelistedChannels = [...settings.whitelistedChannels]
   renderWhitelist()
   renderModeControls()
@@ -134,13 +127,10 @@ function readSettings(current: Settings): Settings {
     solidColor: solidColorInput.value,
     hoverDelay: hoverDelayInput.value as Settings["hoverDelay"],
     autoplayPreview: autoplayPreviewInput.checked,
-    disabledPages: {
-      search: getCheckbox("disable-search").checked,
-      channel: getCheckbox("disable-channel").checked,
-      playlist: getCheckbox("disable-playlist").checked,
-      watch: getCheckbox("disable-watch").checked,
-      subscriptions: getCheckbox("disable-subscriptions").checked,
-    },
+    disabledPages: Object.fromEntries(
+      Array.from(form.querySelectorAll<HTMLInputElement>("input[data-page]"))
+        .map((control) => [control.dataset.page, control.checked]),
+    ) as Settings["disabledPages"],
     whitelistedChannels,
   })
 }
