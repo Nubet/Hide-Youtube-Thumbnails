@@ -1,0 +1,10 @@
+node_modules/
+dist/
+*.zip
+.DS_Store
+
+# Extension.js local session state
+.extension-js
+
+# Reference implementation, not part of the new extension
+.idea
