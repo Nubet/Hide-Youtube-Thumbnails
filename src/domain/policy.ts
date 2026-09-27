@@ -20,7 +20,7 @@ export function shouldHideShorts(
   settings: Settings,
   pageType: PageType,
 ): boolean {
-  return settings.hideShortsOnHome && pageType === "home"
+  return settings.hideShortsOnHome && (pageType === "home" || pageType === "search")
 }
 
 export function shouldHidePlayables(settings: Settings): boolean {

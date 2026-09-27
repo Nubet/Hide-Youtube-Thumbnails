@@ -49,4 +49,12 @@ describe("policy", () => {
       autoplayPreview: false,
     })
   })
+
+  it("hides Shorts on home and search pages", () => {
+    const settings = { ...defaultSettings, hideShortsOnHome: true }
+
+    expect(createRuntimeState(settings, "home").hideShorts).toBe(true)
+    expect(createRuntimeState(settings, "search").hideShorts).toBe(true)
+    expect(createRuntimeState(settings, "watch").hideShorts).toBe(false)
+  })
 })
