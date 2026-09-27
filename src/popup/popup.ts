@@ -18,6 +18,10 @@ const modeControl = getRequiredElement<HTMLSelectElement>("#mode")
 const solidColorControl = getRequiredElement<HTMLDivElement>("#solid-color-control")
 const solidColorInput = getRequiredElement<HTMLInputElement>("#solid-color")
 const solidColorValue = getRequiredElement<HTMLOutputElement>("#solid-color-value")
+const hoverDelayControl = getRequiredElement<HTMLDivElement>("#hover-delay-control")
+const hoverDelayInput = getRequiredElement<HTMLSelectElement>("#hover-delay")
+const hoverPreviewControl = getRequiredElement<HTMLLabelElement>("#hover-preview-control")
+const autoplayPreviewInput = getRequiredElement<HTMLInputElement>("#autoplay-preview")
 const hideShortsOnHomeControl = getRequiredElement<HTMLInputElement>("#hide-shorts-on-home")
 const hidePlayablesControl = getRequiredElement<HTMLInputElement>("#hide-playables")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
@@ -42,17 +46,21 @@ async function loadStoredSettings(): Promise<void> {
   enabledControl.checked = settings.enabled
   modeControl.value = settings.mode
   solidColorInput.value = settings.solidColor
+  hoverDelayInput.value = settings.hoverDelay
+  autoplayPreviewInput.checked = settings.autoplayPreview
   hideShortsOnHomeControl.checked = settings.hideShortsOnHome
   hidePlayablesControl.checked = settings.hidePlayables
   whitelistedChannels = settings.whitelistedChannels
   renderChannelList()
-  renderSolidColorControl()
+  renderModeControls()
 }
 
-function renderSolidColorControl(): void {
+function renderModeControls(): void {
   const isSolidColor = modeControl.value === "solid-color"
   solidColorControl.hidden = !isSolidColor
   solidColorValue.value = solidColorInput.value.toUpperCase()
+  hoverDelayControl.hidden = modeControl.value !== "hidden-except-hover"
+  hoverPreviewControl.hidden = modeControl.value !== "hidden-except-hover"
 }
 
 function renderChannelList(): void {
@@ -163,7 +171,9 @@ async function loadRuntimeState(): Promise<void> {
     enabledControl.checked = response.state.enabled
     modeControl.value = response.state.mode
     solidColorInput.value = response.state.solidColor || DEFAULT_SOLID_COLOR
-    renderSolidColorControl()
+    hoverDelayInput.value = response.state.hoverDelay
+    autoplayPreviewInput.checked = response.state.autoplayPreview
+    renderModeControls()
     renderChannelAction(response.state)
   } catch (error) {
     showError(
@@ -187,6 +197,10 @@ async function saveStoredSetting(
     await settingsRepository.save({ ...settings, mode: message.mode })
   } else if (message.type === "set-solid-color") {
     await settingsRepository.save({ ...settings, solidColor: message.color })
+  } else if (message.type === "set-hover-delay") {
+    await settingsRepository.save({ ...settings, hoverDelay: message.delay })
+  } else if (message.type === "set-autoplay-preview") {
+    await settingsRepository.save({ ...settings, autoplayPreview: message.enabled })
   }
 }
 
@@ -232,11 +246,22 @@ enabledControl.addEventListener("change", () => {
 })
 
 modeControl.addEventListener("change", () => {
-  renderSolidColorControl()
+  renderModeControls()
   void update({
     type: "set-thumbnail-mode",
     mode: modeControl.value as "hidden" | "hidden-except-hover" | "blurred" | "solid-color" | "normal",
   })
+})
+
+hoverDelayInput.addEventListener("change", () => {
+  void update({
+    type: "set-hover-delay",
+    delay: hoverDelayInput.value as "instant" | "brief" | "patient",
+  })
+})
+
+autoplayPreviewInput.addEventListener("change", () => {
+  void update({ type: "set-autoplay-preview", enabled: autoplayPreviewInput.checked })
 })
 
 solidColorInput.addEventListener("input", () => {

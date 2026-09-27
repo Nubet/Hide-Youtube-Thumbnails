@@ -46,6 +46,8 @@ export function createRuntimeState(
     enabled: isEnabled(settings, pageType, channelKey),
     mode: settings.mode,
     solidColor: settings.solidColor,
+    hoverDelay: settings.hoverDelay,
+    autoplayPreview: settings.autoplayPreview,
     hideShorts: shouldHideShorts(settings, pageType),
     hidePlayables: shouldHidePlayables(settings),
   }

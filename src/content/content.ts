@@ -10,12 +10,16 @@ import { StyleState } from "./style-state"
 import { getChannelVideosKey } from "../domain/channel-whitelist"
 import { ShortsState } from "./shorts-state"
 import { PlayablesState } from "./playables-state"
+import { HoverRevealState } from "./hover-reveal-state"
+import { HoverPreviewState } from "./hover-preview-state"
 
 export default function mountContentScript(): () => void {
   const root = document.documentElement
   const styleState = new StyleState(root)
   const shortsState = new ShortsState(document)
   const playablesState = new PlayablesState(document)
+  const hoverRevealState = new HoverRevealState(document)
+  const hoverPreviewState = new HoverPreviewState(document)
   const settingsRepository = new SettingsRepository()
   const diagnostics = new Diagnostics(document)
   let lastNavigation = "initial"
@@ -24,6 +28,8 @@ export default function mountContentScript(): () => void {
     styleState,
     shortsState,
     playablesState,
+    hoverRevealState,
+    hoverPreviewState,
     getLocation: () => window.location,
     classify: classifyPage,
     subscribeToStorageChanges,
@@ -60,6 +66,10 @@ export default function mountContentScript(): () => void {
       await settingsRepository.save({ ...settings, mode: message.mode })
     } else if (message.type === "set-solid-color") {
       await settingsRepository.save({ ...settings, solidColor: message.color })
+    } else if (message.type === "set-hover-delay") {
+      await settingsRepository.save({ ...settings, hoverDelay: message.delay })
+    } else if (message.type === "set-autoplay-preview") {
+      await settingsRepository.save({ ...settings, autoplayPreview: message.enabled })
     } else if (message.type === "add-current-channel") {
       const channelKey = getChannelVideosKey(window.location.pathname)
       if (!channelKey) {

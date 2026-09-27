@@ -11,6 +11,7 @@ export type StyleRoot = {
 const MODE_ATTRIBUTE = "hytMode"
 const READY_ATTRIBUTE = "hytReady"
 const SOLID_COLOR_PROPERTY = "--hyt-solid-color"
+const PREVIEW_ATTRIBUTE = "hytPreview"
 
 export class StyleState {
   public constructor(private readonly root: StyleRoot) {}
@@ -36,6 +37,12 @@ export class StyleState {
       this.root.style?.removeProperty(SOLID_COLOR_PROPERTY)
     }
 
+    if (state.enabled && state.mode === "hidden-except-hover" && !state.autoplayPreview) {
+      this.root.dataset[PREVIEW_ATTRIBUTE] = "disabled"
+    } else {
+      delete this.root.dataset[PREVIEW_ATTRIBUTE]
+    }
+
     this.root.dataset[READY_ATTRIBUTE] = "true"
   }
 
@@ -43,5 +50,6 @@ export class StyleState {
     delete this.root.dataset[MODE_ATTRIBUTE]
     delete this.root.dataset[READY_ATTRIBUTE]
     this.root.style?.removeProperty(SOLID_COLOR_PROPERTY)
+    delete this.root.dataset[PREVIEW_ATTRIBUTE]
   }
 }

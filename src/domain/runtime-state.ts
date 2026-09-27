@@ -1,5 +1,6 @@
 import type { PageType } from "./page-type"
 import type { ThumbnailMode } from "./thumbnail-mode"
+import type { HoverDelay } from "./hover-delay"
 
 export type RuntimeState = {
   supported: boolean
@@ -9,6 +10,8 @@ export type RuntimeState = {
   hidePlayables: boolean
   mode: ThumbnailMode
   solidColor: string
+  hoverDelay: HoverDelay
+  autoplayPreview: boolean
   channelVideosKey?: string
   channelWhitelisted?: boolean
 }

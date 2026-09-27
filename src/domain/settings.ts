@@ -1,4 +1,5 @@
 import { isThumbnailMode, type ThumbnailMode } from "./thumbnail-mode"
+import { isHoverDelay, type HoverDelay } from "./hover-delay"
 
 export const SETTINGS_SCHEMA_VERSION = 1 as const
 export const DEFAULT_SOLID_COLOR = "#e5e5ea" as const
@@ -18,6 +19,8 @@ export type Settings = {
   hidePlayables: boolean
   mode: ThumbnailMode
   solidColor: string
+  hoverDelay: HoverDelay
+  autoplayPreview: boolean
   disabledPages: DisabledPages
   whitelistedChannels: string[]
 }
@@ -29,6 +32,8 @@ export const defaultSettings: Settings = {
   hidePlayables: true,
   mode: "hidden",
   solidColor: DEFAULT_SOLID_COLOR,
+  hoverDelay: "instant",
+  autoplayPreview: false,
   disabledPages: {
     search: false,
     channel: false,
@@ -89,6 +94,8 @@ export function normalizeSettings(value: unknown): Settings {
     hidePlayables: readBoolean(value.hidePlayables, defaultSettings.hidePlayables),
     mode: isThumbnailMode(value.mode) ? value.mode : defaultSettings.mode,
     solidColor: readSolidColor(value.solidColor),
+    hoverDelay: isHoverDelay(value.hoverDelay) ? value.hoverDelay : defaultSettings.hoverDelay,
+    autoplayPreview: readBoolean(value.autoplayPreview, defaultSettings.autoplayPreview),
     disabledPages: readDisabledPages(value.disabledPages),
     whitelistedChannels: readWhitelistedChannels(value.whitelistedChannels),
   }
