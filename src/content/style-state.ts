@@ -1,4 +1,5 @@
 import type { RuntimeState } from "../domain/runtime-state"
+import { usesHoverReveal } from "../domain/thumbnail-mode"
 
 export type StyleRoot = {
   dataset: DOMStringMap
@@ -37,7 +38,7 @@ export class StyleState {
       this.root.style?.removeProperty(SOLID_COLOR_PROPERTY)
     }
 
-    if (state.enabled && state.mode === "hidden-except-hover" && !state.autoplayPreview) {
+    if (state.enabled && usesHoverReveal(state.mode) && !state.autoplayPreview) {
       this.root.dataset[PREVIEW_ATTRIBUTE] = "disabled"
     } else {
       delete this.root.dataset[PREVIEW_ATTRIBUTE]

@@ -1,4 +1,5 @@
 import type { RuntimeState } from "../domain/runtime-state"
+import { usesHoverReveal } from "../domain/thumbnail-mode"
 
 const previewVideoSelector = [
   "ytd-rich-item-renderer video",
@@ -32,7 +33,7 @@ export class HoverPreviewState {
   public apply(state: RuntimeState): void {
     this.clear()
 
-    if (!state.enabled || state.mode !== "hidden-except-hover" || state.autoplayPreview) {
+    if (!state.enabled || !usesHoverReveal(state.mode) || state.autoplayPreview) {
       return
     }
 

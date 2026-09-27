@@ -31,35 +31,39 @@ html[data-hyt-mode="hidden-except-hover"] ytm-shorts-lockup-view-model:not([data
   overflow: hidden !important;
 }
 
-html[data-hyt-mode="blurred"] ytd-thumbnail img,
-html[data-hyt-mode="blurred"] ytd-playlist-thumbnail img,
-html[data-hyt-mode="blurred"] yt-thumbnail-view-model img,
-html[data-hyt-mode="blurred"] .yt-lockup-view-model-wiz__content-image img,
-html[data-hyt-mode="blurred"] .shortsLockupViewModelHostThumbnailContainer img {
+html[data-hyt-mode="blurred"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) img,
+html[data-hyt-mode="blurred"] ytd-grid-video-renderer:not([data-hyt-hover-revealed="true"]) img,
+html[data-hyt-mode="blurred"] ytd-playlist-video-renderer:not([data-hyt-hover-revealed="true"]) img,
+html[data-hyt-mode="blurred"] ytd-video-renderer:not([data-hyt-hover-revealed="true"]) img,
+html[data-hyt-mode="blurred"] ytm-shorts-lockup-view-model:not([data-hyt-hover-revealed="true"]) img {
   filter: blur(16px) !important;
 }
 
-html[data-hyt-mode="solid-color"] ytd-thumbnail,
-html[data-hyt-mode="solid-color"] ytd-playlist-thumbnail,
-html[data-hyt-mode="solid-color"] yt-thumbnail-view-model,
-html[data-hyt-mode="solid-color"] .yt-lockup-view-model-wiz__content-image,
-html[data-hyt-mode="solid-color"] .shortsLockupViewModelHostThumbnailContainer {
+html[data-hyt-mode="solid-color"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail,
+html[data-hyt-mode="solid-color"] ytd-grid-video-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail,
+html[data-hyt-mode="solid-color"] ytd-playlist-video-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail,
+html[data-hyt-mode="solid-color"] ytd-video-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail,
+html[data-hyt-mode="solid-color"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) yt-thumbnail-view-model,
+html[data-hyt-mode="solid-color"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) .yt-lockup-view-model-wiz__content-image,
+html[data-hyt-mode="solid-color"] ytm-shorts-lockup-view-model:not([data-hyt-hover-revealed="true"]) .shortsLockupViewModelHostThumbnailContainer {
   background-color: var(--hyt-solid-color, var(--yt-spec-additive-background)) !important;
   background-image: none !important;
 }
 
-html[data-hyt-mode="solid-color"] ytd-thumbnail #thumbnail,
-html[data-hyt-mode="solid-color"] ytd-playlist-thumbnail #thumbnail {
+html[data-hyt-mode="solid-color"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail #thumbnail,
+html[data-hyt-mode="solid-color"] ytd-grid-video-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail #thumbnail,
+html[data-hyt-mode="solid-color"] ytd-playlist-video-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail #thumbnail,
+html[data-hyt-mode="solid-color"] ytd-video-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail #thumbnail {
   background-color: var(--hyt-solid-color, var(--yt-spec-additive-background)) !important;
   background-image: none !important;
 }
 
 /* Keep image details hidden even when YouTube paints them on a nested element. */
-html[data-hyt-mode="solid-color"] ytd-thumbnail img,
-html[data-hyt-mode="solid-color"] ytd-playlist-thumbnail img,
-html[data-hyt-mode="solid-color"] yt-thumbnail-view-model img,
-html[data-hyt-mode="solid-color"] .yt-lockup-view-model-wiz__content-image img,
-html[data-hyt-mode="solid-color"] .shortsLockupViewModelHostThumbnailContainer img {
+html[data-hyt-mode="solid-color"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) img,
+html[data-hyt-mode="solid-color"] ytd-grid-video-renderer:not([data-hyt-hover-revealed="true"]) img,
+html[data-hyt-mode="solid-color"] ytd-playlist-video-renderer:not([data-hyt-hover-revealed="true"]) img,
+html[data-hyt-mode="solid-color"] ytd-video-renderer:not([data-hyt-hover-revealed="true"]) img,
+html[data-hyt-mode="solid-color"] ytm-shorts-lockup-view-model:not([data-hyt-hover-revealed="true"]) img {
   opacity: 0 !important;
   background-image: none !important;
 }
