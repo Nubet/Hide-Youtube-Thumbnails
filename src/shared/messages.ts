@@ -1,6 +1,7 @@
 import type { RuntimeState } from "../domain/runtime-state"
 import type { ThumbnailMode } from "../domain/thumbnail-mode"
 import type { HoverDelay } from "../domain/hover-delay"
+import type { DisableablePage } from "../domain/page-type"
 
 export type ExtensionMessage =
   | { type: "get-runtime-state" }
@@ -11,6 +12,7 @@ export type ExtensionMessage =
   | { type: "set-solid-color"; color: string }
   | { type: "set-hover-delay"; delay: HoverDelay }
   | { type: "set-autoplay-preview"; enabled: boolean }
+  | { type: "set-page-enabled"; page: DisableablePage; enabled: boolean }
   | { type: "add-current-channel" }
 
 export type ExtensionResponse =

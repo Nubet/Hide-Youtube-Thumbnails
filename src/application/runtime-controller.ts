@@ -19,12 +19,12 @@ type StyleState = {
   clear(): void
 }
 
-type ShortsState = {
+type PlayablesState = {
   apply(state: RuntimeState): void
   clear(): void
 }
 
-type PlayablesState = {
+type ShortsState = {
   apply(state: RuntimeState): void
   clear(): void
 }
@@ -42,8 +42,8 @@ type HoverPreviewState = {
 export type RuntimeControllerDependencies = {
   settingsRepository: SettingsRepository
   styleState: StyleState
-  shortsState?: ShortsState
   playablesState?: PlayablesState
+  shortsState?: ShortsState
   hoverRevealState?: HoverRevealState
   hoverPreviewState?: HoverPreviewState
   getLocation: () => PathLocation
@@ -94,8 +94,8 @@ export class RuntimeController {
 
     this.currentState = state
     this.dependencies.styleState.apply(state)
-    this.dependencies.shortsState?.apply(state)
     this.dependencies.playablesState?.apply(state)
+    this.dependencies.shortsState?.apply(state)
     this.dependencies.hoverRevealState?.apply(state)
     this.dependencies.hoverPreviewState?.apply(state)
     this.dependencies.onStateApplied?.(state)
@@ -113,8 +113,8 @@ export class RuntimeController {
     this.unsubscribeFromNavigation = undefined
     this.currentState = undefined
     this.dependencies.styleState.clear()
-    this.dependencies.shortsState?.clear()
     this.dependencies.playablesState?.clear()
+    this.dependencies.shortsState?.clear()
     this.dependencies.hoverRevealState?.clear()
     this.dependencies.hoverPreviewState?.clear()
   }
