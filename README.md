@@ -1,19 +1,19 @@
 <div align="center">
-  <img src="./icons/icon128.png" alt="Hide YouTube Thumbnails icon" width="96" />
+  <img src="./icons/icon128.png" alt="Debait - Hide YouTube Thumbnail icon" width="96" />
 
-  # Hide Youtube Thumbnails
+  # Debait - Hide YouTube Thumbnail
 
   Control how YouTube thumbnails are displayed without changing the rest of the page.
 
-  [![Firefox](https://img.shields.io/badge/Firefox-4.0-ff7139?style=flat-square&logo=firefox&logoColor=white)](https://addons.mozilla.org/en-US/firefox/addon/hide-youtube-thumbnails/)
-  [![Chrome](https://img.shields.io/badge/Chrome-4.0-4285f4?style=flat-square&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore/detail/hide-youtube-thumbnails/ljjlnjljgkldhfjfcljljljljljljl)
+  [![Firefox](https://img.shields.io/badge/Firefox-4.0-ff7139?style=flat-square&logo=firefox&logoColor=white)](https://addons.mozilla.org/en-US/firefox/addon/debait-hide-youtube-thumbnail/)
+  [![Chrome](https://img.shields.io/badge/Chrome-4.0-4285f4?style=flat-square&logo=googlechrome&logoColor=white)](https://chrome.google.com/webstore/detail/debait-hide-youtube-thumbnails/ibdkpkbmkenapdkiliclojoogkfiaelb)
   [![Manifest V3](https://img.shields.io/badge/Manifest-V3-4285f4?style=flat-square&logo=googlechrome&logoColor=white)](https://developer.chrome.com/docs/extensions/develop/migrate/what-is-mv3)  
   [![License](https://img.shields.io/badge/License-MIT-007acc?style=flat-square)](https://opensource.org/licenses/MIT)
   
 [Features](#features) • [Architecture](#architecture)
 </div>
 
-`Hide Youtube Thumbnails` is a cross-browser WebExtension for YouTube. It lets you hide, blur, or replace video thumbnails while keeping the surrounding page layout under your control.
+`Debait - Hide YouTube Thumbnail` is a cross-browser WebExtension for YouTube. It lets you hide, blur, or replace video thumbnails while keeping the surrounding page layout under your control.
 
 ## Features
 
