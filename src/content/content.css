@@ -17,12 +17,12 @@ html[data-hyt-mode="hidden"] .ytd-display-ad-renderer #media-container {
   display: none !important;
 }
 
-html[data-hyt-mode="hidden-except-hover"] ytd-rich-item-renderer:not(:hover) ytd-thumbnail,
-html[data-hyt-mode="hidden-except-hover"] ytd-grid-video-renderer:not(:hover) ytd-thumbnail,
-html[data-hyt-mode="hidden-except-hover"] ytd-playlist-video-renderer:not(:hover) ytd-thumbnail,
-html[data-hyt-mode="hidden-except-hover"] ytd-rich-item-renderer:not(:hover) yt-thumbnail-view-model,
-html[data-hyt-mode="hidden-except-hover"] ytd-rich-item-renderer:not(:hover) .yt-lockup-view-model-wiz__content-image,
-html[data-hyt-mode="hidden-except-hover"] ytm-shorts-lockup-view-model:not(:hover) .shortsLockupViewModelHostThumbnailContainer {
+html[data-hyt-mode="hidden-except-hover"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail,
+html[data-hyt-mode="hidden-except-hover"] ytd-grid-video-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail,
+html[data-hyt-mode="hidden-except-hover"] ytd-playlist-video-renderer:not([data-hyt-hover-revealed="true"]) ytd-thumbnail,
+html[data-hyt-mode="hidden-except-hover"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) yt-thumbnail-view-model,
+html[data-hyt-mode="hidden-except-hover"] ytd-rich-item-renderer:not([data-hyt-hover-revealed="true"]) .yt-lockup-view-model-wiz__content-image,
+html[data-hyt-mode="hidden-except-hover"] ytm-shorts-lockup-view-model:not([data-hyt-hover-revealed="true"]) .shortsLockupViewModelHostThumbnailContainer {
   max-height: 0 !important;
   min-height: 0 !important;
   max-width: 0 !important;
@@ -62,6 +62,26 @@ html[data-hyt-mode="solid-color"] .yt-lockup-view-model-wiz__content-image img,
 html[data-hyt-mode="solid-color"] .shortsLockupViewModelHostThumbnailContainer img {
   opacity: 0 !important;
   background-image: none !important;
+}
+
+html[data-hyt-preview="disabled"] ytd-moving-thumbnail-renderer {
+  display: none !important;
+}
+
+html[data-hyt-preview="disabled"] #video-preview {
+  display: none !important;
+}
+
+html[data-hyt-preview="disabled"] ytd-rich-item-renderer video,
+html[data-hyt-preview="disabled"] ytd-grid-video-renderer video,
+html[data-hyt-preview="disabled"] ytd-playlist-video-renderer video,
+html[data-hyt-preview="disabled"] ytd-video-renderer video,
+html[data-hyt-preview="disabled"] ytd-thumbnail video,
+html[data-hyt-preview="disabled"] ytd-playlist-thumbnail video,
+html[data-hyt-preview="disabled"] yt-thumbnail-view-model video,
+html[data-hyt-preview="disabled"] .yt-lockup-view-model-wiz__content-image video,
+html[data-hyt-preview="disabled"] ytm-shorts-lockup-view-model video {
+  display: none !important;
 }
 
 [data-hyt-shorts-hidden="true"] {

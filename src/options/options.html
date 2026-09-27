@@ -60,6 +60,31 @@
           </label>
         </section>
 
+        <section id="hover-delay-control" class="panel hover-delay-control" aria-labelledby="hover-delay-title" hidden>
+          <div>
+            <h2 id="hover-delay-title">Reveal delay</h2>
+            <p class="help-text">Choose how long a pointer must stay over a video before its thumbnail appears.</p>
+          </div>
+          <label for="hover-delay">
+            <span class="sr-only">Thumbnail reveal delay</span>
+            <select id="hover-delay" name="hover-delay">
+              <option value="instant">Instant</option>
+              <option value="brief">Short pause - 250 ms</option>
+              <option value="patient">Long pause - 700 ms</option>
+            </select>
+          </label>
+        </section>
+
+        <section id="hover-preview-control" class="panel hover-preview-control" hidden>
+          <label class="switch-row" for="autoplay-preview">
+            <span>
+              <strong>Play video preview</strong>
+              <small>Show a short video preview after the thumbnail appears.</small>
+            </span>
+            <input id="autoplay-preview" name="autoplay-preview" type="checkbox" />
+          </label>
+        </section>
+
         <section class="panel" aria-labelledby="shorts-title">
           <label class="switch-row" for="hide-shorts-on-home">
             <span>

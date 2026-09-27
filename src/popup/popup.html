@@ -51,6 +51,29 @@
               <output id="solid-color-value" for="solid-color"></output>
             </div>
           </div>
+          <div id="hover-delay-control" class="hover-delay-control" hidden>
+            <label for="hover-delay">
+              <span class="setting-title">Reveal delay</span>
+              <span class="setting-desc">Wait before showing a thumbnail on hover.</span>
+            </label>
+            <div class="select-wrapper compact-select">
+              <select id="hover-delay" aria-label="Thumbnail reveal delay">
+                <option value="instant">Instant</option>
+                <option value="brief">Short pause - 250 ms</option>
+                <option value="patient">Long pause - 700 ms</option>
+              </select>
+            </div>
+          </div>
+          <label id="hover-preview-control" class="hover-preview-control setting-item" for="autoplay-preview" hidden>
+            <span class="setting-content">
+              <span class="setting-title">Play video preview</span>
+              <span class="setting-desc">Show a short video preview after the thumbnail appears.</span>
+            </span>
+            <span class="toggle">
+              <input id="autoplay-preview" type="checkbox" />
+              <span class="slider"></span>
+            </span>
+          </label>
         </div>
       </div>
 

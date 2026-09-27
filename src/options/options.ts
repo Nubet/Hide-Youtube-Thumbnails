@@ -23,6 +23,10 @@ const hidePlayablesControl = getRequiredElement<HTMLInputElement>("#hide-playabl
 const solidColorControl = getRequiredElement<HTMLElement>("#solid-color-control")
 const solidColorInput = getRequiredElement<HTMLInputElement>("#solid-color")
 const solidColorValue = getRequiredElement<HTMLSpanElement>("#solid-color-value")
+const hoverDelayControl = getRequiredElement<HTMLElement>("#hover-delay-control")
+const hoverDelayInput = getRequiredElement<HTMLSelectElement>("#hover-delay")
+const hoverPreviewControl = getRequiredElement<HTMLElement>("#hover-preview-control")
+const autoplayPreviewInput = getRequiredElement<HTMLInputElement>("#autoplay-preview")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
 const resetButton = getRequiredElement<HTMLButtonElement>("#reset")
 const channelUrlInput = getRequiredElement<HTMLInputElement>("#channel-url")
@@ -55,6 +59,8 @@ function setMode(mode: ThumbnailMode): void {
 function renderSolidColorControl(): void {
   const mode = getModeControl().value
   solidColorControl.hidden = mode !== "solid-color"
+  hoverDelayControl.hidden = mode !== "hidden-except-hover"
+  hoverPreviewControl.hidden = mode !== "hidden-except-hover"
   solidColorValue.textContent = solidColorInput.value.toUpperCase()
 }
 
@@ -64,6 +70,8 @@ function renderSettings(settings: Settings): void {
   hidePlayablesControl.checked = settings.hidePlayables
   setMode(settings.mode)
   solidColorInput.value = settings.solidColor
+  hoverDelayInput.value = settings.hoverDelay
+  autoplayPreviewInput.checked = settings.autoplayPreview
   getCheckbox("disable-search").checked = settings.disabledPages.search
   getCheckbox("disable-channel").checked = settings.disabledPages.channel
   getCheckbox("disable-playlist").checked = settings.disabledPages.playlist
@@ -123,14 +131,16 @@ function readSettings(current: Settings): Settings {
     hidePlayables: hidePlayablesControl.checked,
     mode: getModeControl().value as ThumbnailMode,
     solidColor: solidColorInput.value,
-      disabledPages: {
+    hoverDelay: hoverDelayInput.value as Settings["hoverDelay"],
+    autoplayPreview: autoplayPreviewInput.checked,
+    disabledPages: {
       search: getCheckbox("disable-search").checked,
       channel: getCheckbox("disable-channel").checked,
       playlist: getCheckbox("disable-playlist").checked,
       watch: getCheckbox("disable-watch").checked,
-        subscriptions: getCheckbox("disable-subscriptions").checked,
-      },
-      whitelistedChannels,
+      subscriptions: getCheckbox("disable-subscriptions").checked,
+    },
+    whitelistedChannels,
   })
 }
 

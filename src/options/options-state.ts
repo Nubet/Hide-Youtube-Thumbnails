@@ -7,6 +7,8 @@ export type OptionsFormValues = {
   hidePlayables: boolean
   mode: ThumbnailMode
   solidColor: string
+  hoverDelay: Settings["hoverDelay"]
+  autoplayPreview: boolean
   disabledPages: Settings["disabledPages"]
   whitelistedChannels: string[]
 }
@@ -22,6 +24,8 @@ export function mergeOptions(
     hidePlayables: values.hidePlayables,
     mode: values.mode,
     solidColor: values.solidColor,
+    hoverDelay: values.hoverDelay,
+    autoplayPreview: values.autoplayPreview,
     disabledPages: values.disabledPages,
     whitelistedChannels: values.whitelistedChannels,
   }
