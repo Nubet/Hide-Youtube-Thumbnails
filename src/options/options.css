@@ -1,10 +1,43 @@
+:root {
+  --bg-main: #f8f9fa;
+  --bg-panel: #ffffff;
+  --text-primary: #0f0f0f;
+  --text-secondary: #606060;
+  --border-color: #e5e5e5;
+  --interactive-color: #065fd4;
+  --brand-color: #ff0000;
+  --brand-hover: #cc0000;
+  --danger-color: #cc0000;
+  --danger-hover: #990000;
+  --toggle-off: #cccccc;
+  --focus-ring: rgba(6, 95, 212, 0.4);
+  --radius: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-main: #0f0f0f;
+    --bg-panel: #212121;
+    --text-primary: #f1f1f1;
+    --text-secondary: #aaaaaa;
+    --border-color: #3f3f3f;
+    --interactive-color: #3ea6ff;
+    --brand-color: #ff3333;
+    --brand-hover: #ff6666;
+    --danger-color: #ff3333;
+    --danger-hover: #ff6666;
+    --toggle-off: #555555;
+    --focus-ring: rgba(62, 166, 255, 0.4);
+  }
+}
+
 body {
-  max-width: 720px;
+  max-width: 760px;
   margin: 0 auto;
   padding: 40px 24px;
-  color: #171717;
-  background: #f5f5f5;
-  font: 16px/1.5 system-ui, sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-main);
+  font: 15px/1.5 system-ui, -apple-system, sans-serif;
 }
 
 [hidden] {
@@ -13,106 +46,264 @@ body {
 
 main {
   display: grid;
-  gap: 24px;
+  gap: 28px;
 }
 
-h1,
-p {
+h1, p, h2 {
   margin: 0;
 }
 
 h1 {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  letter-spacing: -0.04em;
+  font-size: 2.2rem;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin-bottom: 4px;
 }
 
 h2 {
-  margin: 0 0 6px;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
 .eyebrow {
-  margin-bottom: 4px;
-  color: #666;
+  color: var(--brand-color);
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  margin-bottom: 8px;
 }
 
 form {
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .panel {
   display: grid;
-  gap: 12px;
+  gap: 16px;
   margin: 0;
-  padding: 20px;
-  border: 1px solid #d8d8d8;
-  border-radius: 12px;
-  background: #fff;
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  background: var(--bg-panel);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+  .panel {
+    box-shadow: none;
+  }
 }
 
 legend {
-  padding: 0 6px;
-  font-weight: 700;
-}
-
-.switch-row,
-.choice {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
+  padding: 0 8px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+  margin-left: -8px;
 }
 
 .switch-row {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 20px;
+  cursor: pointer;
 }
 
-.choice span,
 .switch-row span {
   display: grid;
+  gap: 4px;
+}
+
+.switch-row strong {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.switch-row input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 44px;
+  height: 24px;
+  background-color: var(--toggle-off);
+  border-radius: 24px;
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  flex-shrink: 0;
+  transition: background-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.switch-row input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.switch-row input[type="checkbox"]:checked {
+  background-color: var(--interactive-color);
+}
+
+.switch-row input[type="checkbox"]:checked::after {
+  transform: translateX(20px);
+}
+
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  padding: 8px 12px;
+  margin: -8px -12px;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.choice:hover {
+  background-color: rgba(0,0,0,0.03);
+}
+
+@media (prefers-color-scheme: dark) {
+  .choice:hover {
+    background-color: rgba(255,255,255,0.03);
+  }
+}
+
+.choice.compact {
+  align-items: center;
+}
+
+.choice span {
+  display: grid;
   gap: 2px;
+  margin-top: 1px;
 }
 
-small {
-  color: #666;
-  font-size: 0.875rem;
+.choice.compact span {
+  margin-top: 0;
 }
 
-.help-text {
-  color: #555;
+.choice strong {
+  font-weight: 500;
 }
+
+.choice input[type="radio"],
+.choice input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  background-color: transparent;
+  margin: 0;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.choice input[type="radio"] {
+  border-radius: 50%;
+}
+
+.choice input[type="checkbox"] {
+  border-radius: 4px;
+}
+
+.choice input[type="radio"]::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--interactive-color);
+  transform: scale(0);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.choice input[type="checkbox"]::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background-color: var(--interactive-color);
+  transform: scale(0);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.choice input[type="radio"]:checked,
+.choice input[type="checkbox"]:checked {
+  border-color: var(--interactive-color);
+}
+
+.choice input[type="radio"]:checked::before,
+.choice input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+fieldset.panel {
+  padding-bottom: 24px;
+}
+fieldset.panel .choice.compact {
+  display: inline-flex;
+  width: calc(33.333% - 12px);
+  min-width: 160px;
+  margin: 0;
+  padding: 6px 0;
+}
+
+
+small, .help-text, .empty-state {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 
 .whitelist-entry {
   display: grid;
-  gap: 6px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .input-row {
   display: flex;
-  gap: 8px;
+  gap: 12px;
 }
 
-.input-row input {
-  min-width: 0;
+.input-row input,
+.hover-delay-control select {
   flex: 1;
-  min-height: 38px;
-  padding: 0 10px;
-  border: 1px solid #bbb;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  color: inherit;
-  background: transparent;
+  color: var(--text-primary);
+  background: var(--bg-main);
   font: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.hover-delay-control select {
+  min-width: 180px;
+  cursor: pointer;
 }
 
 .whitelist-list {
   display: grid;
   gap: 8px;
-  margin: 0;
+  margin: 16px 0 0 0;
   padding: 0;
   list-style: none;
 }
@@ -122,180 +313,132 @@ small {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 12px;
-  border: 1px solid #d8d8d8;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
+  background: var(--bg-main);
 }
 
 .whitelist-list li span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 0.95rem;
 }
 
-.remove-channel {
-  min-height: 32px;
-  padding: 0 10px;
-  color: #111;
-  background: transparent;
-  font-size: 0.875rem;
-  white-space: nowrap;
-}
-
-.empty-state {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.compact {
-  min-height: 28px;
-}
-
-.solid-color-control {
-  grid-template-columns: 1fr auto;
-  align-items: center;
-}
-
+.solid-color-control,
 .hover-delay-control {
   grid-template-columns: 1fr auto;
   align-items: center;
 }
 
 .hover-preview-control {
-  padding: 0;
-}
-
-.hover-delay-control select {
-  min-width: 150px;
-  min-height: 38px;
-  padding: 0 10px;
-  border: 1px solid #bbb;
-  border-radius: 8px;
-  color: inherit;
-  background: transparent;
-  font: inherit;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  /* It is a .panel containing a .switch-row, so default .panel styling is enough */
 }
 
 .color-input {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #666;
+  gap: 12px;
+  color: var(--text-secondary);
   cursor: pointer;
-  font: 0.8rem/1 system-ui, sans-serif;
-  font-variant-numeric: tabular-nums;
+  font-family: monospace;
+  font-size: 0.9rem;
+  text-transform: uppercase;
 }
 
 .color-input input[type="color"] {
-  width: 42px;
-  height: 42px;
-  padding: 3px;
-  border: 1px solid #bbb;
-  border-radius: 10px;
-  background: transparent;
+  width: 44px;
+  height: 44px;
+  padding: 2px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-main);
   cursor: pointer;
-}
-
-input {
-  accent-color: #111;
 }
 
 .actions {
   display: flex;
-  gap: 12px;
+  gap: 16px;
+  margin-top: 8px;
 }
 
 button {
-  min-height: 40px;
-  padding: 0 18px;
-  border: 1px solid #111;
+  min-height: 44px;
+  padding: 0 24px;
+  border: none;
   border-radius: 8px;
-  color: #fff;
-  background: #111;
+  color: #ffffff;
+  background: var(--brand-color);
   cursor: pointer;
   font: inherit;
-  font-weight: 700;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+button:hover {
+  background: var(--brand-hover);
 }
 
 button.secondary {
-  color: #111;
+  color: var(--text-primary);
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+}
+
+button.secondary:hover {
+  background: var(--border-color);
+}
+
+.remove-channel {
+  min-height: 32px;
+  padding: 0 12px;
+  color: var(--danger-color);
   background: transparent;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+}
+
+.remove-channel:hover {
+  background: rgba(204, 0, 0, 0.1);
+  border-color: var(--danger-color);
+  color: var(--danger-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  button {
+    color: #0f0f0f;
+  }
+  .remove-channel:hover {
+    background: rgba(255, 78, 69, 0.15);
+  }
 }
 
 button:focus-visible,
-input:focus-visible {
-  outline: 3px solid #7aa7ff;
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
+  border-color: var(--interactive-color);
 }
 
 #status {
   min-height: 24px;
-  color: #555;
+  color: var(--text-secondary);
+  font-weight: 500;
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    color: #f5f5f5;
-    background: #151515;
-  }
-
-  .eyebrow,
-  small,
-  #status,
-  .help-text,
-  .empty-state {
-    color: #aaa;
-  }
-
-  .panel {
-    border-color: #383838;
-    background: #222;
-  }
-
-  .input-row input,
-  .whitelist-list li {
-    border-color: #383838;
-  }
-
-  input {
-    accent-color: #fff;
-  }
-
-  .color-input {
-    color: #aaa;
-  }
-
-  .color-input input[type="color"] {
-    border-color: #555;
-  }
-
-  button {
-    border-color: #f5f5f5;
-    color: #111;
-    background: #f5f5f5;
-  }
-
-  button.secondary {
-    color: #f5f5f5;
-    background: transparent;
-  }
-}
-
-@media (max-width: 560px) {
+@media (max-width: 600px) {
   .input-row {
-    align-items: stretch;
     flex-direction: column;
+  }
+  .solid-color-control,
+  .hover-delay-control {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  fieldset.panel .choice.compact {
+    width: 100%;
   }
 }
