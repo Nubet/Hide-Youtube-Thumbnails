@@ -8,6 +8,7 @@ export type RuntimeState = {
   hideShorts: boolean
   hidePlayables: boolean
   mode: ThumbnailMode
+  solidColor: string
   channelVideosKey?: string
   channelWhitelisted?: boolean
 }

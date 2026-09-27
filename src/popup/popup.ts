@@ -1,5 +1,6 @@
 import { sendMessageToActiveTab } from "../infrastructure/message-bus"
 import { SettingsRepository } from "../infrastructure/settings-repository"
+import { DEFAULT_SOLID_COLOR } from "../domain/settings"
 import {
   formatChannelVideosUrl,
   parseChannelWhitelistInput,
@@ -14,6 +15,9 @@ function getRequiredElement<T extends Element>(selector: string): T {
 
 const enabledControl = getRequiredElement<HTMLInputElement>("#enabled")
 const modeControl = getRequiredElement<HTMLSelectElement>("#mode")
+const solidColorControl = getRequiredElement<HTMLDivElement>("#solid-color-control")
+const solidColorInput = getRequiredElement<HTMLInputElement>("#solid-color")
+const solidColorValue = getRequiredElement<HTMLOutputElement>("#solid-color-value")
 const hideShortsOnHomeControl = getRequiredElement<HTMLInputElement>("#hide-shorts-on-home")
 const hidePlayablesControl = getRequiredElement<HTMLInputElement>("#hide-playables")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
@@ -37,10 +41,18 @@ async function loadStoredSettings(): Promise<void> {
   const settings = await settingsRepository.load()
   enabledControl.checked = settings.enabled
   modeControl.value = settings.mode
+  solidColorInput.value = settings.solidColor
   hideShortsOnHomeControl.checked = settings.hideShortsOnHome
   hidePlayablesControl.checked = settings.hidePlayables
   whitelistedChannels = settings.whitelistedChannels
   renderChannelList()
+  renderSolidColorControl()
+}
+
+function renderSolidColorControl(): void {
+  const isSolidColor = modeControl.value === "solid-color"
+  solidColorControl.hidden = !isSolidColor
+  solidColorValue.value = solidColorInput.value.toUpperCase()
 }
 
 function renderChannelList(): void {
@@ -150,6 +162,8 @@ async function loadRuntimeState(): Promise<void> {
 
     enabledControl.checked = response.state.enabled
     modeControl.value = response.state.mode
+    solidColorInput.value = response.state.solidColor || DEFAULT_SOLID_COLOR
+    renderSolidColorControl()
     renderChannelAction(response.state)
   } catch (error) {
     showError(
@@ -171,6 +185,8 @@ async function saveStoredSetting(
     await settingsRepository.save({ ...settings, hidePlayables: message.enabled })
   } else if (message.type === "set-thumbnail-mode") {
     await settingsRepository.save({ ...settings, mode: message.mode })
+  } else if (message.type === "set-solid-color") {
+    await settingsRepository.save({ ...settings, solidColor: message.color })
   }
 }
 
@@ -181,7 +197,7 @@ async function update(message: Parameters<typeof sendMessageToActiveTab>[0]): Pr
     const response = await sendMessageToActiveTab(message)
     const error = responseError(response)
     if (error) {
-      if (message.type === "set-enabled" || message.type === "set-thumbnail-mode" || message.type === "set-hide-shorts-on-home" || message.type === "set-hide-playables") {
+      if (message.type !== "add-current-channel") {
         await saveStoredSetting(message)
         status.textContent = "Saved. Reload YouTube to apply it"
       } else {
@@ -198,7 +214,7 @@ async function update(message: Parameters<typeof sendMessageToActiveTab>[0]): Pr
         "Thumbnails are visible on this channel home page and its Videos tab."
     }
   } catch (error) {
-    if (message.type === "set-enabled" || message.type === "set-thumbnail-mode" || message.type === "set-hide-shorts-on-home" || message.type === "set-hide-playables") {
+    if (message.type !== "add-current-channel") {
       await saveStoredSetting(message)
       status.textContent = "Saved. Reload YouTube to apply it"
       return
@@ -216,10 +232,19 @@ enabledControl.addEventListener("change", () => {
 })
 
 modeControl.addEventListener("change", () => {
+  renderSolidColorControl()
   void update({
     type: "set-thumbnail-mode",
     mode: modeControl.value as "hidden" | "hidden-except-hover" | "blurred" | "solid-color" | "normal",
   })
+})
+
+solidColorInput.addEventListener("input", () => {
+  solidColorValue.value = solidColorInput.value.toUpperCase()
+})
+
+solidColorInput.addEventListener("change", () => {
+  void update({ type: "set-solid-color", color: solidColorInput.value })
 })
 
 hideShortsOnHomeControl.addEventListener("change", () => {

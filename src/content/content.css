@@ -44,15 +44,24 @@ html[data-hyt-mode="solid-color"] ytd-playlist-thumbnail,
 html[data-hyt-mode="solid-color"] yt-thumbnail-view-model,
 html[data-hyt-mode="solid-color"] .yt-lockup-view-model-wiz__content-image,
 html[data-hyt-mode="solid-color"] .shortsLockupViewModelHostThumbnailContainer {
-  background: var(--yt-spec-additive-background) !important;
+  background-color: var(--hyt-solid-color, var(--yt-spec-additive-background)) !important;
+  background-image: none !important;
 }
 
+html[data-hyt-mode="solid-color"] ytd-thumbnail #thumbnail,
+html[data-hyt-mode="solid-color"] ytd-playlist-thumbnail #thumbnail {
+  background-color: var(--hyt-solid-color, var(--yt-spec-additive-background)) !important;
+  background-image: none !important;
+}
+
+/* Keep image details hidden even when YouTube paints them on a nested element. */
 html[data-hyt-mode="solid-color"] ytd-thumbnail img,
 html[data-hyt-mode="solid-color"] ytd-playlist-thumbnail img,
 html[data-hyt-mode="solid-color"] yt-thumbnail-view-model img,
 html[data-hyt-mode="solid-color"] .yt-lockup-view-model-wiz__content-image img,
 html[data-hyt-mode="solid-color"] .shortsLockupViewModelHostThumbnailContainer img {
   opacity: 0 !important;
+  background-image: none !important;
 }
 
 [data-hyt-shorts-hidden="true"] {

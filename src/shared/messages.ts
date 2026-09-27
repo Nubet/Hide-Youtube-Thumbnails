@@ -7,6 +7,7 @@ export type ExtensionMessage =
   | { type: "set-hide-shorts-on-home"; enabled: boolean }
   | { type: "set-hide-playables"; enabled: boolean }
   | { type: "set-thumbnail-mode"; mode: ThumbnailMode }
+  | { type: "set-solid-color"; color: string }
   | { type: "add-current-channel" }
 
 export type ExtensionResponse =

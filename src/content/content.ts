@@ -58,6 +58,8 @@ export default function mountContentScript(): () => void {
         return { ok: false, error: "Unsupported thumbnail mode" }
       }
       await settingsRepository.save({ ...settings, mode: message.mode })
+    } else if (message.type === "set-solid-color") {
+      await settingsRepository.save({ ...settings, solidColor: message.color })
     } else if (message.type === "add-current-channel") {
       const channelKey = getChannelVideosKey(window.location.pathname)
       if (!channelKey) {
