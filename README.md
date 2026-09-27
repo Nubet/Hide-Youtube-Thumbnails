@@ -17,13 +17,14 @@
 
 ## Features
 
-- **Five thumbnail modes**: completely hidden, hidden until hover, blurred, solid color, or normal.
-- **Custom solid color**: choose any HEX color to use when the solid-color mode is active.
-- **Progressive YouTube support**: covers standard video cards, playlist thumbnails, Shorts thumbnails, newer YouTube thumbnail components, and display ads.
-- **Hide Shorts on Home**: removes Shorts shelves and cards from the YouTube home page. Shorts are not hidden on other pages by this setting.
-- **Hide Playables**: removes YouTube's Game Room and Playables shelves.
-- **Channel exceptions**: show thumbnails on selected channel pages and their `/videos` tabs while keeping them hidden elsewhere.
-- **Per-page controls**: disable the extension on search results, channel pages, playlists, watch pages, or subscriptions.
+- **Five thumbnail modes**: Choose between completely hidden, hover-only, blurred, solid color, or default thumbnails.
+- **Configurable hover reveal**: Adjust how quickly hidden thumbnails appear when you hover over them.
+- **Optional video previews**: Choose whether hovering a revealed thumbnail can play YouTube's short video preview.
+- **Custom solid color**: Set any HEX color for the solid-color thumbnail mode.
+- **Hide Shorts on Home**: Removes Shorts shelves and cards from the YouTube home page. Shorts are not hidden on other pages by this setting.
+- **Hide Playables**: Removes YouTube's Game Room and Playables shelves.
+- **Channel exceptions**: Show thumbnails on selected channel pages and their `/videos` tabs while keeping them hidden elsewhere.
+- **Per-page controls**: Quickly toggle the extension on search results, channel pages, playlists, watch pages, or subscriptions.
 
 
 
