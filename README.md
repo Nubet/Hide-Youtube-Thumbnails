@@ -18,6 +18,7 @@
 ## Features
 
 - **Five thumbnail modes**: completely hidden, hidden until hover, blurred, solid color, or normal.
+- **Custom solid color**: choose any HEX color to use when the solid-color mode is active.
 - **Progressive YouTube support**: covers standard video cards, playlist thumbnails, Shorts thumbnails, newer YouTube thumbnail components, and display ads.
 - **Hide Shorts on Home**: removes Shorts shelves and cards from the YouTube home page. Shorts are not hidden on other pages by this setting.
 - **Hide Playables**: removes YouTube's Game Room and Playables shelves.
@@ -30,7 +31,7 @@
 
 The extension runs a content script on `*.youtube.com` at document start. It classifies the current YouTube view, loads the saved settings, and applies CSS attributes and DOM markers to matching thumbnail or shelf elements.
 
-Thumbnail visibility is controlled with CSS, while Shorts and Playables containers are detected and hidden with selectors that are reapplied when YouTube updates its single-page interface. Settings are kept in `browser.storage.sync` through the WebExtension API.
+Thumbnail visibility is controlled with CSS, while Shorts and Playables containers are detected and hidden with selectors that are reapplied when YouTube updates its single-page interface. Settings are kept in `browser.storage.sync` through the WebExtension API. The solid-color picker appears only when that mode is selected.
 
 ## Supported YouTube Views
 
@@ -68,4 +69,3 @@ The extension declares:
 
 - `storage`: saves settings using browser sync storage.
 - `*://*.youtube.com/*` content-script matches: applies the configured presentation rules on YouTube pages.
-
