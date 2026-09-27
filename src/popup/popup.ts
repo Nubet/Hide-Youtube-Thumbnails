@@ -1,6 +1,7 @@
 import { sendMessageToActiveTab } from "../infrastructure/message-bus"
 import { SettingsRepository } from "../infrastructure/settings-repository"
 import { DEFAULT_SOLID_COLOR } from "../domain/settings"
+import { usesHoverReveal } from "../domain/thumbnail-mode"
 import {
   formatChannelVideosUrl,
   parseChannelWhitelistInput,
@@ -59,8 +60,10 @@ function renderModeControls(): void {
   const isSolidColor = modeControl.value === "solid-color"
   solidColorControl.hidden = !isSolidColor
   solidColorValue.value = solidColorInput.value.toUpperCase()
-  hoverDelayControl.hidden = modeControl.value !== "hidden-except-hover"
-  hoverPreviewControl.hidden = modeControl.value !== "hidden-except-hover"
+  const mode = modeControl.value as Parameters<typeof usesHoverReveal>[0]
+  const hasHoverReveal = usesHoverReveal(mode)
+  hoverDelayControl.hidden = !hasHoverReveal
+  hoverPreviewControl.hidden = !hasHoverReveal
 }
 
 function renderChannelList(): void {

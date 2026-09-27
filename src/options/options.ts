@@ -2,7 +2,7 @@ import {
   defaultSettings,
   type Settings,
 } from "../domain/settings"
-import { isThumbnailMode, type ThumbnailMode } from "../domain/thumbnail-mode"
+import { isThumbnailMode, usesHoverReveal, type ThumbnailMode } from "../domain/thumbnail-mode"
 import { SettingsRepository } from "../infrastructure/settings-repository"
 import {
   formatChannelVideosUrl,
@@ -56,11 +56,12 @@ function setMode(mode: ThumbnailMode): void {
   control.checked = true
 }
 
-function renderSolidColorControl(): void {
-  const mode = getModeControl().value
+function renderModeControls(): void {
+  const mode = getModeControl().value as ThumbnailMode
   solidColorControl.hidden = mode !== "solid-color"
-  hoverDelayControl.hidden = mode !== "hidden-except-hover"
-  hoverPreviewControl.hidden = mode !== "hidden-except-hover"
+  const hasHoverReveal = usesHoverReveal(mode)
+  hoverDelayControl.hidden = !hasHoverReveal
+  hoverPreviewControl.hidden = !hasHoverReveal
   solidColorValue.textContent = solidColorInput.value.toUpperCase()
 }
 
@@ -79,7 +80,7 @@ function renderSettings(settings: Settings): void {
   getCheckbox("disable-subscriptions").checked = settings.disabledPages.subscriptions
   whitelistedChannels = [...settings.whitelistedChannels]
   renderWhitelist()
-  renderSolidColorControl()
+  renderModeControls()
 }
 
 function renderWhitelist(): void {
@@ -168,7 +169,7 @@ form.addEventListener("submit", (event) => {
 })
 
 for (const modeControl of form.querySelectorAll<HTMLInputElement>("input[name='mode']")) {
-  modeControl.addEventListener("change", renderSolidColorControl)
+  modeControl.addEventListener("change", renderModeControls)
 }
 
 solidColorInput.addEventListener("input", () => {

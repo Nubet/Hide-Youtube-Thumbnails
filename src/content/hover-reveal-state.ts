@@ -1,4 +1,5 @@
 import { hoverDelayMilliseconds } from "../domain/hover-delay"
+import { usesHoverReveal } from "../domain/thumbnail-mode"
 import type { RuntimeState } from "../domain/runtime-state"
 
 const hoverableSelector = [
@@ -20,7 +21,7 @@ export class HoverRevealState {
     this.clearRevealState()
     this.currentDelay = state.hoverDelay
 
-    if (!state.enabled || state.mode !== "hidden-except-hover") {
+    if (!state.enabled || !usesHoverReveal(state.mode)) {
       this.stopListening()
       return
     }
