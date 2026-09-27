@@ -24,7 +24,7 @@
 - **Hide Shorts on Home**: Removes Shorts shelves and cards from the YouTube home page. Shorts are not hidden on other pages by this setting.
 - **Hide Playables**: Removes YouTube's Game Room and Playables shelves.
 - **Channel exceptions**: Show thumbnails on selected channel pages and their `/videos` tabs while keeping them hidden elsewhere.
-- **Per-page controls**: Quickly toggle the extension on search results, channel pages, playlists, watch pages, or subscriptions.
+- **Per-page controls**: Quickly toggle the extension on individual YouTube views from the popup.
 
 
 
@@ -43,8 +43,16 @@ The current page classifier recognizes:
 - Watch: `/watch`
 - Playlist: `/playlist`
 - Subscriptions: `/feed/subscriptions`
+- Trending: `/feed/trending`
+- History: `/feed/history`
+- Explore: `/feed/explore`
+- Gaming: `/gaming`
+- Music: `/music`
+- Live: `/live`
 - Shorts: `/shorts` and `/shorts/...`
-- Channels: `/<handle>`, `/channel/...`, `/c/...`, and `/user/...`
+- Channel home: `/<handle>`, `/channel/...`, `/c/...`, and `/user/...`
+- Channel videos: `/<handle>/videos`
+- Channel streams: `/<handle>/streams`
 
 Other YouTube paths remain untouched by page-specific settings, although the global thumbnail mode can still apply to recognized thumbnail elements present on those pages.
 
