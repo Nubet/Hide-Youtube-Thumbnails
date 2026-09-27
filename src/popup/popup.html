@@ -30,7 +30,6 @@
         <div class="setting-item column">
           <div class="setting-content">
             <label class="setting-title" for="mode">Thumbnail mode</label>
-            <span class="setting-desc">How should thumbnails be hidden?</span>
           </div>
           <div class="select-wrapper">
             <select id="mode">
@@ -41,39 +40,6 @@
               <option value="normal">Normal (Visible)</option>
             </select>
           </div>
-          <div id="solid-color-control" class="solid-color-control" hidden>
-            <label for="solid-color">
-              <span class="setting-title">Solid color</span>
-              <span class="setting-desc">Choose the color used in place of thumbnails.</span>
-            </label>
-            <div class="color-picker">
-              <input id="solid-color" type="color" aria-label="Choose solid thumbnail color" />
-              <output id="solid-color-value" for="solid-color"></output>
-            </div>
-          </div>
-          <div id="hover-delay-control" class="hover-delay-control" hidden>
-            <label for="hover-delay">
-              <span class="setting-title">Reveal delay</span>
-              <span class="setting-desc">Wait before showing a thumbnail on hover.</span>
-            </label>
-            <div class="select-wrapper compact-select">
-              <select id="hover-delay" aria-label="Thumbnail reveal delay">
-                <option value="instant">Instant</option>
-                <option value="brief">Short pause - 250 ms</option>
-                <option value="patient">Long pause - 700 ms</option>
-              </select>
-            </div>
-          </div>
-          <label id="hover-preview-control" class="hover-preview-control setting-item" for="autoplay-preview" hidden>
-            <span class="setting-content">
-              <span class="setting-title">Play video preview</span>
-              <span class="setting-desc">Show a short video preview after the thumbnail appears.</span>
-            </span>
-            <span class="toggle">
-              <input id="autoplay-preview" type="checkbox" />
-              <span class="slider"></span>
-            </span>
-          </label>
         </div>
       </div>
 
@@ -95,34 +61,6 @@
         </label>
       </section>
 
-      <section class="settings-group youtube-features" aria-labelledby="youtube-features-title">
-        <div class="section-header">
-          <h2 id="youtube-features-title">YouTube features</h2>
-          <p class="section-desc">Manage extra sections shown on YouTube.</p>
-        </div>
-        <label class="setting-item" for="hide-shorts-on-home">
-          <div class="setting-content">
-            <span class="setting-title">Hide Shorts on Home</span>
-            <span class="setting-desc">Removes Shorts shelf from home page</span>
-          </div>
-          <div class="toggle">
-            <input id="hide-shorts-on-home" type="checkbox" />
-            <span class="slider"></span>
-          </div>
-        </label>
-
-        <label class="setting-item" for="hide-playables">
-          <div class="setting-content">
-            <span class="setting-title">Hide Playables</span>
-            <span class="setting-desc">Removes Game Room & Playables</span>
-          </div>
-          <div class="toggle">
-            <input id="hide-playables" type="checkbox" />
-            <span class="slider"></span>
-          </div>
-        </label>
-      </section>
-
       <section class="settings-group exceptions" aria-labelledby="channel-list-title">
         <div class="section-header">
           <h2 id="channel-list-title">Channel Exceptions</h2>
@@ -133,30 +71,11 @@
           <p id="channel-action-help">Open a YouTube channel page or its Videos tab to add it.</p>
           <button id="channel-action" class="primary-button" type="button">Show thumbnails for this channel</button>
         </div>
-
-        <div class="channel-entry">
-          <div class="input-row">
-            <input
-              id="channel-url"
-              type="url"
-              inputmode="url"
-              placeholder="youtube.com/@example"
-              autocomplete="off"
-            />
-            <button id="add-channel" class="secondary-button" type="button">Add</button>
-          </div>
-        </div>
-        <ul id="channel-list" aria-live="polite"></ul>
       </section>
 
-      <section class="settings-group page-exceptions" aria-labelledby="page-exceptions-title">
-        <div class="section-header">
-          <p class="eyebrow">Advanced</p>
-          <h2 id="page-exceptions-title">Page exceptions</h2>
-          <p class="section-desc">Choose where thumbnails should stay visible.</p>
-        </div>
-        <div id="page-list" aria-live="polite"></div>
-      </section>
+      <button id="open-options" class="secondary-button" style="width: 100%;">
+        Open full settings
+      </button>
 
       <div class="status-container">
         <p id="status" role="status" aria-live="polite"></p>
