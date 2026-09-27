@@ -20,6 +20,9 @@ const form = getRequiredElement<HTMLFormElement>("#settings-form")
 const enabledControl = getRequiredElement<HTMLInputElement>("#enabled")
 const hideShortsOnHomeControl = getRequiredElement<HTMLInputElement>("#hide-shorts-on-home")
 const hidePlayablesControl = getRequiredElement<HTMLInputElement>("#hide-playables")
+const solidColorControl = getRequiredElement<HTMLElement>("#solid-color-control")
+const solidColorInput = getRequiredElement<HTMLInputElement>("#solid-color")
+const solidColorValue = getRequiredElement<HTMLSpanElement>("#solid-color-value")
 const status = getRequiredElement<HTMLParagraphElement>("#status")
 const resetButton = getRequiredElement<HTMLButtonElement>("#reset")
 const channelUrlInput = getRequiredElement<HTMLInputElement>("#channel-url")
@@ -49,11 +52,18 @@ function setMode(mode: ThumbnailMode): void {
   control.checked = true
 }
 
+function renderSolidColorControl(): void {
+  const mode = getModeControl().value
+  solidColorControl.hidden = mode !== "solid-color"
+  solidColorValue.textContent = solidColorInput.value.toUpperCase()
+}
+
 function renderSettings(settings: Settings): void {
   enabledControl.checked = settings.enabled
   hideShortsOnHomeControl.checked = settings.hideShortsOnHome
   hidePlayablesControl.checked = settings.hidePlayables
   setMode(settings.mode)
+  solidColorInput.value = settings.solidColor
   getCheckbox("disable-search").checked = settings.disabledPages.search
   getCheckbox("disable-channel").checked = settings.disabledPages.channel
   getCheckbox("disable-playlist").checked = settings.disabledPages.playlist
@@ -61,6 +71,7 @@ function renderSettings(settings: Settings): void {
   getCheckbox("disable-subscriptions").checked = settings.disabledPages.subscriptions
   whitelistedChannels = [...settings.whitelistedChannels]
   renderWhitelist()
+  renderSolidColorControl()
 }
 
 function renderWhitelist(): void {
@@ -111,6 +122,7 @@ function readSettings(current: Settings): Settings {
     hideShortsOnHome: hideShortsOnHomeControl.checked,
     hidePlayables: hidePlayablesControl.checked,
     mode: getModeControl().value as ThumbnailMode,
+    solidColor: solidColorInput.value,
       disabledPages: {
       search: getCheckbox("disable-search").checked,
       channel: getCheckbox("disable-channel").checked,
@@ -143,6 +155,14 @@ form.addEventListener("submit", (event) => {
       status.textContent = "Could not save settings"
     }
   })()
+})
+
+for (const modeControl of form.querySelectorAll<HTMLInputElement>("input[name='mode']")) {
+  modeControl.addEventListener("change", renderSolidColorControl)
+}
+
+solidColorInput.addEventListener("input", () => {
+  solidColorValue.textContent = solidColorInput.value.toUpperCase()
 })
 
 resetButton.addEventListener("click", () => {

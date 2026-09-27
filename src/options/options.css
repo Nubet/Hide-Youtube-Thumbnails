@@ -147,6 +147,31 @@ small {
   min-height: 28px;
 }
 
+.solid-color-control {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.color-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #666;
+  cursor: pointer;
+  font: 0.8rem/1 system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.color-input input[type="color"] {
+  width: 42px;
+  height: 42px;
+  padding: 3px;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+}
+
 input {
   accent-color: #111;
 }
@@ -210,6 +235,14 @@ input:focus-visible {
 
   input {
     accent-color: #fff;
+  }
+
+  .color-input {
+    color: #aaa;
+  }
+
+  .color-input input[type="color"] {
+    border-color: #555;
   }
 
   button {

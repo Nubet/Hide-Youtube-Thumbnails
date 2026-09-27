@@ -1,6 +1,7 @@
 import { isThumbnailMode, type ThumbnailMode } from "./thumbnail-mode"
 
 export const SETTINGS_SCHEMA_VERSION = 1 as const
+export const DEFAULT_SOLID_COLOR = "#e5e5ea" as const
 
 export type DisabledPages = {
   search: boolean
@@ -16,6 +17,7 @@ export type Settings = {
   hideShortsOnHome: boolean
   hidePlayables: boolean
   mode: ThumbnailMode
+  solidColor: string
   disabledPages: DisabledPages
   whitelistedChannels: string[]
 }
@@ -26,6 +28,7 @@ export const defaultSettings: Settings = {
   hideShortsOnHome: true,
   hidePlayables: true,
   mode: "hidden",
+  solidColor: DEFAULT_SOLID_COLOR,
   disabledPages: {
     search: false,
     channel: false,
@@ -42,6 +45,12 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function readBoolean(value: unknown, fallback: boolean): boolean {
   return typeof value === "boolean" ? value : fallback
+}
+
+function readSolidColor(value: unknown): string {
+  return typeof value === "string" && /^#[0-9a-f]{6}$/i.test(value)
+    ? value.toLowerCase()
+    : defaultSettings.solidColor
 }
 
 function readDisabledPages(value: unknown): DisabledPages {
@@ -79,6 +88,7 @@ export function normalizeSettings(value: unknown): Settings {
     hideShortsOnHome: readBoolean(value.hideShortsOnHome, defaultSettings.hideShortsOnHome),
     hidePlayables: readBoolean(value.hidePlayables, defaultSettings.hidePlayables),
     mode: isThumbnailMode(value.mode) ? value.mode : defaultSettings.mode,
+    solidColor: readSolidColor(value.solidColor),
     disabledPages: readDisabledPages(value.disabledPages),
     whitelistedChannels: readWhitelistedChannels(value.whitelistedChannels),
   }

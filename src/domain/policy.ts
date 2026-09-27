@@ -45,6 +45,7 @@ export function createRuntimeState(
     pageType,
     enabled: isEnabled(settings, pageType, channelKey),
     mode: settings.mode,
+    solidColor: settings.solidColor,
     hideShorts: shouldHideShorts(settings, pageType),
     hidePlayables: shouldHidePlayables(settings),
   }
